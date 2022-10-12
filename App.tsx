@@ -1,8 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { StyleSheet, Text, TextInput, View } from "react-native";
-import ArrowButtonLeft from "./ArrowButtonLeft";
-import ArrowButtonRight from "./ArrowButtonRight";
 import CopperInput from "./CopperInput";
 import CopperPairSvgComponent from "./CopperPairSvgComponent";
 
@@ -10,9 +8,10 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Text>Open up App.tsx to start working on your app!</Text>
-      <CopperPairSvgComponent />
+      <View style={styles.copperPairContainer}>
+        <CopperPairSvgComponent />
+      </View>
       <CopperInput />
-      <StatusBar style="auto" />
     </View>
   );
 }
@@ -20,8 +19,15 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f50",
+    backgroundColor: "#36393e",
     alignItems: "center",
     justifyContent: "center",
+  },
+  copperPairContainer: {
+    backgroundColor: "#424549",
+    padding: 5,
+    paddingHorizontal: 50,
+    margin: 15,
+    borderRadius: 10,
   },
 });

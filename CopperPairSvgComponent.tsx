@@ -3,9 +3,10 @@ import SVG, { Path } from "react-native-svg";
 
 const CopperPairSvgComponent = () => (
   <SVG
-    viewBox="18 23.621 40 80"
+    // viewBox="18 23.621 40 80"
+    viewBox="18 28 40 80"
     width={40}
-    height={180}
+    height={169}
     // {...props}
   >
     <Path

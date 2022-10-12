@@ -2,11 +2,15 @@ import * as React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Svg, { SvgProps, Path } from "react-native-svg";
 
-const ArrowButtonLeft = () => (
-  <TouchableOpacity>
+interface ArrowButtonProps {
+  onPress: () => void;
+}
+
+const ArrowButtonLeft = (props: ArrowButtonProps) => (
+  <TouchableOpacity onPress={props.onPress}>
     <ArrowButtonLeftSVG />
   </TouchableOpacity>
-)
+);
 
 const styles = StyleSheet.create({
 
