@@ -3,15 +3,20 @@ import { StyleSheet, Text, TextInput, View } from "react-native";
 import ArrowButtonLeft from "./ArrowButtonLeft";
 import ArrowButtonRight from "./ArrowButtonRight";
 
-type Props = {};
-const CopperInput = () => {
-  const [pair, setPair] = useState(0);
-  const addPair = () => {setPair(oldPair => {
-    return oldPair+1
-  })}
-  const subtractPair = () => {setPair(oldPair => {
-    return oldPair-1
-  })}
+interface Props {
+  pair: number;
+  setPair: (newPair: number) => void;
+  addPair: () => void;
+  subtractPair: () => void;
+}
+const CopperInput = ({ pair, setPair, addPair, subtractPair }: Props) => {
+  // const [pair, setPair] = useState(0);
+  // const addPair = () => {setPair(oldPair => {
+  //   return oldPair+1
+  // })}
+  // const subtractPair = () => {setPair(oldPair => {
+  //   return oldPair-1
+  // })}
 
   return (
     <View style={styles.container}>
@@ -20,7 +25,7 @@ const CopperInput = () => {
         style={styles.textInput}
         keyboardType="number-pad"
         value={pair + ""}
-        onChangeText={(newVal) => setPair(() => Number(newVal))}
+        onChangeText={(newVal) => setPair(Number(newVal))}
         placeholder="pair"
       />
       <ArrowButtonRight onPress={addPair} />
