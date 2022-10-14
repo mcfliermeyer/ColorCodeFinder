@@ -3,6 +3,7 @@ import React from "react";
 import { StyleSheet, Text, TextInput, View } from "react-native";
 import CopperInput from "./CopperInput";
 import CopperPairSvgComponent from "./CopperPairSvgComponent";
+import useRingColor from "./hooks/useRingColor";
 
 export default function App() {
   const [pair, setPair] = React.useState(0);
@@ -17,16 +18,19 @@ export default function App() {
     });
   };
   const setPairNumber = (newPair: number) => {
-    setPair(() => newPair)
-  }
+    setPair(() => newPair);
+  };
   return (
     <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
       <View style={styles.copperPairContainer}>
-        <CopperPairSvgComponent />
+        <CopperPairSvgComponent tipColor={"white"} ringColor={"blue"} />
       </View>
-      <CopperInput pair={pair} setPair={setPairNumber}  addPair={addPair} 
-        subtractPair={subtractPair} />
+      <CopperInput
+        pair={pair}
+        setPair={setPairNumber}
+        addPair={addPair}
+        subtractPair={subtractPair}
+      />
     </View>
   );
 }
