@@ -7,10 +7,14 @@ enum TipColor {
   Violet,
 }
 const useTipColor = (pairNumber: number) => {
-  const ringNumber =
-    pairNumber <= 25
-      ? (pairNumber - 1 - ((pairNumber - 1) % 5)) / 5
-      : (((pairNumber % 25 - 2 - ((pairNumber % 25 - 2) % 5))) / 5);
+  let pair = pairNumber
+  if (pairNumber > 25) {
+    pair = (pairNumber ) % 25
+    if (pair === 0) {
+      return "violet"
+    }
+  }
+  const ringNumber = (pair - 1 - ((pair - 1) % 5)) / 5;
   switch (ringNumber) {
     case TipColor.White:
       return "white";
