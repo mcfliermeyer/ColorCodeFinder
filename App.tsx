@@ -4,6 +4,7 @@ import { StyleSheet, Text, TextInput, View } from "react-native";
 import CopperInput from "./CopperInput";
 import CopperPairSvgComponent from "./CopperPairSvgComponent";
 import useRingColor from "./hooks/useRingColor";
+import useTipColor from "./hooks/useTipColor";
 
 export default function App() {
   const [pair, setPair] = React.useState(0);
@@ -23,7 +24,10 @@ export default function App() {
   return (
     <View style={styles.container}>
       <View style={styles.copperPairContainer}>
-        <CopperPairSvgComponent tipColor={"white"} ringColor={"blue"} />
+        <CopperPairSvgComponent
+          tipColor={useTipColor(pair)}
+          ringColor={useRingColor(pair)}
+        />
       </View>
       <CopperInput
         pair={pair}

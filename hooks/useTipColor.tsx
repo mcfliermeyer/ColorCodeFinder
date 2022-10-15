@@ -1,13 +1,16 @@
 type Props = { pairNumber: number };
 enum TipColor {
-  White = 1,
+  White = 0,
   Red,
   Black,
   Yellow,
   Violet,
 }
-const useTipColor = ({ pairNumber }: Props) => {
-  const ringNumber = (pairNumber % 5) + 1;
+const useTipColor = (pairNumber: number) => {
+  const ringNumber =
+    pairNumber <= 25
+      ? (pairNumber - 1 - ((pairNumber - 1) % 5)) / 5
+      : (((pairNumber % 25 - 2 - ((pairNumber % 25 - 2) % 5))) / 5);
   switch (ringNumber) {
     case TipColor.White:
       return "white";
@@ -20,7 +23,7 @@ const useTipColor = ({ pairNumber }: Props) => {
     case TipColor.Violet:
       return "violet";
     default:
-      console.log("tip pair not uhmmm its out of bounds morty");
+      return "aqua";
   }
 };
 export default useTipColor;
