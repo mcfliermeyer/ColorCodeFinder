@@ -10,14 +10,6 @@ interface Props {
   subtractPair: () => void;
 }
 const CopperInput = ({ pair, setPair, addPair, subtractPair }: Props) => {
-  // const [pair, setPair] = useState(0);
-  // const addPair = () => {setPair(oldPair => {
-  //   return oldPair+1
-  // })}
-  // const subtractPair = () => {setPair(oldPair => {
-  //   return oldPair-1
-  // })}
-
   return (
     <View style={styles.container}>
       <ArrowButtonLeft onPress={subtractPair} />

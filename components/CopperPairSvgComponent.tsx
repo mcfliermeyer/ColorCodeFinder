@@ -8,11 +8,9 @@ interface Props {
 
 const CopperPairSvgComponent = (props: Props) => (
   <SVG
-    // viewBox="18 23.621 40 80"
     viewBox="18 28 40 80"
     width={40}
     height={169}
-    // {...props}
   >
     <Path
       strokeLinecap="round"

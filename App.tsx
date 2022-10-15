@@ -1,8 +1,8 @@
 import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { StyleSheet, Text, TextInput, View } from "react-native";
-import CopperInput from "./CopperInput";
-import CopperPairSvgComponent from "./CopperPairSvgComponent";
+import CopperInput from "./components/CopperInput";
+import CopperPairSvgComponent from "./components/CopperPairSvgComponent";
 import useRingColor from "./hooks/useRingColor";
 import useTipColor from "./hooks/useTipColor";
 
