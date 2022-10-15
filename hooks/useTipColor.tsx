@@ -7,11 +7,11 @@ enum TipColor {
   Violet,
 }
 const useTipColor = (pairNumber: number) => {
-  let pair = pairNumber
+  let pair = pairNumber;
   if (pairNumber > 25) {
-    pair = (pairNumber ) % 25
+    pair = pairNumber % 25;
     if (pair === 0) {
-      return "violet"
+      return "mediumorchid";
     }
   }
   const ringNumber = (pair - 1 - ((pair - 1) % 5)) / 5;
@@ -25,7 +25,7 @@ const useTipColor = (pairNumber: number) => {
     case TipColor.Yellow:
       return "yellow";
     case TipColor.Violet:
-      return "violet";
+      return "mediumorchid";
     default:
       return "aqua";
   }
