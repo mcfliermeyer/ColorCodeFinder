@@ -1,7 +1,12 @@
 import { StatusBar } from "expo-status-bar";
 import React from "react";
-import { StyleSheet, Text, TextInput, View } from "react-native";
+import {
+  StyleSheet,
+  View,
+  TouchableOpacity,
+} from "react-native";
 import CopperInput from "./components/CopperInput";
+import CopperPairSelector from "./components/CopperPairSelector";
 import CopperPairSvgComponent from "./components/CopperPairSvgComponent";
 import useRingColor from "./hooks/useRingColor";
 import useTipColor from "./hooks/useTipColor";
@@ -21,14 +26,21 @@ export default function App() {
   const setPairNumber = (newPair: number) => {
     setPair(() => newPair);
   };
+  const handlePress = () => {
+    console.log("pressed pair");
+  };
   return (
     <View style={styles.container}>
-      <View style={styles.copperPairContainer}>
+      <CopperPairSelector />
+      <TouchableOpacity
+        style={styles.copperPairContainer}
+        onPress={handlePress}
+      >
         <CopperPairSvgComponent
           tipColor={useTipColor(pair)}
           ringColor={useRingColor(pair)}
         />
-      </View>
+      </TouchableOpacity>
       <CopperInput
         pair={pair}
         setPair={setPairNumber}
@@ -40,6 +52,9 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
+  copperPairSelector: {
+    flex: 1,
+  },
   container: {
     flex: 1,
     backgroundColor: "#36393e",
