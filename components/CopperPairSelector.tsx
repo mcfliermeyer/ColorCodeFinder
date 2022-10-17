@@ -1,16 +1,22 @@
-import { StyleSheet, View, TouchableOpacity } from "react-native";
+import { StyleSheet, View, TouchableOpacity, Dimensions } from "react-native";
 import useRingColor from "../hooks/useRingColor";
 import useTipColor from "../hooks/useTipColor";
 import CopperPairSvgComponent from "./CopperPairSvgComponent";
+import useComponentSize from "../hooks/useComponentSize";
+
+const screen = Dimensions.get("screen")
 
 type Props = {};
-const CopperPairSelector = (props: Props) => {
+const CopperPairSelector = () => {
+  const [size, onLayout] = useComponentSize();
+  // console.log(size);
+
   return (
-    <View style={styles.container}>
+    <View style={styles.container} onLayout={useComponentSize}>
       <CopperPairSvgComponent
         tipColor={useTipColor(1)}
         ringColor={useRingColor(1)}
-        width={10}
+        width={screen.width/6}
         height={80}
       />
     </View>

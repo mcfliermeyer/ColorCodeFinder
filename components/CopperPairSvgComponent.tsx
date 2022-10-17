@@ -10,7 +10,7 @@ interface Props {
 
 const CopperPairSvgComponent = (props: Props) => (
   <SVG
-  viewBox="0 0 25 110" width="25" height="140"
+  viewBox="0 0 25 110" width={`${props.width || 25}`} height={`${props.height || 140}`}
   preserveAspectRatio="none"
   >
     <Path
