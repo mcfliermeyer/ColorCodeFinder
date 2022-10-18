@@ -2,23 +2,54 @@ import { StyleSheet, View, TouchableOpacity, Dimensions } from "react-native";
 import useRingColor from "../hooks/useRingColor";
 import useTipColor from "../hooks/useTipColor";
 import CopperPairSvgComponent from "./CopperPairSvgComponent";
-import useComponentSize from "../hooks/useComponentSize";
 
-const screen = Dimensions.get("screen")
+const screen = Dimensions.get("screen");
+// TODO: measure height to fit 25 pairs on screen without looking crowded
+// TODO figure out why 100% height is not filling whole screen
 
-type Props = {};
 const CopperPairSelector = () => {
-  const [size, onLayout] = useComponentSize();
-  // console.log(size);
-
   return (
-    <View style={styles.container} onLayout={useComponentSize}>
-      <CopperPairSvgComponent
-        tipColor={useTipColor(1)}
-        ringColor={useRingColor(1)}
-        width={screen.width/6}
-        height={80}
-      />
+    <View style={styles.container}>
+      <TouchableOpacity style={styles.pairButton}>
+        <CopperPairSvgComponent
+          tipColor={useTipColor(1)}
+          ringColor={useRingColor(1)}
+          width={screen.width / 20}
+          height={screen.height / 5}
+        />
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.pairButton}>
+        <CopperPairSvgComponent
+          tipColor={useTipColor(1)}
+          ringColor={useRingColor(1)}
+          width={screen.width / 20}
+          height={screen.height / 5}
+        />
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.pairButton}>
+        <CopperPairSvgComponent
+          tipColor={useTipColor(1)}
+          ringColor={useRingColor(1)}
+          width={screen.width / 20}
+          height={screen.height / 5}
+        />
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.pairButton}>
+        <CopperPairSvgComponent
+          tipColor={useTipColor(1)}
+          ringColor={useRingColor(1)}
+          width={screen.width / 20}
+          height={screen.height / 5}
+        />
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.pairButton}>
+        <CopperPairSvgComponent
+          tipColor={useTipColor(1)}
+          ringColor={useRingColor(1)}
+          width={screen.width / 20}
+          height={screen.height / 5}
+        />
+      </TouchableOpacity>
     </View>
   );
 };
@@ -26,6 +57,7 @@ const CopperPairSelector = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    flexDirection: "row",
     // backgroundColor: "#36393e",
     minHeight: "100%",
     minWidth: "100%",
@@ -33,6 +65,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  pairButton: {
+    padding: 25,
+  }
 });
 
 export default CopperPairSelector;
