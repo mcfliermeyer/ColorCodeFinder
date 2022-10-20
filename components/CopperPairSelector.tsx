@@ -10,46 +10,16 @@ const screen = Dimensions.get("screen");
 const CopperPairSelector = () => {
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.pairButton}>
-        <CopperPairSvgComponent
-          tipColor={useTipColor(1)}
-          ringColor={useRingColor(1)}
-          width={screen.width / 20}
-          height={screen.height / 5}
-        />
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.pairButton}>
-        <CopperPairSvgComponent
-          tipColor={useTipColor(1)}
-          ringColor={useRingColor(1)}
-          width={screen.width / 20}
-          height={screen.height / 5}
-        />
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.pairButton}>
-        <CopperPairSvgComponent
-          tipColor={useTipColor(1)}
-          ringColor={useRingColor(1)}
-          width={screen.width / 20}
-          height={screen.height / 5}
-        />
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.pairButton}>
-        <CopperPairSvgComponent
-          tipColor={useTipColor(1)}
-          ringColor={useRingColor(1)}
-          width={screen.width / 20}
-          height={screen.height / 5}
-        />
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.pairButton}>
-        <CopperPairSvgComponent
-          tipColor={useTipColor(1)}
-          ringColor={useRingColor(1)}
-          width={screen.width / 20}
-          height={screen.height / 5}
-        />
-      </TouchableOpacity>
+        {Array.from({ length: 5 }, (_, index) => (
+          <TouchableOpacity style={styles.pairButton} key={index}>
+            <CopperPairSvgComponent
+              tipColor={useTipColor(1)}
+              ringColor={useRingColor(1)}
+              width={screen.width / 20}
+              height={screen.height / 5}
+            />
+          </TouchableOpacity>
+        ))}
     </View>
   );
 };
