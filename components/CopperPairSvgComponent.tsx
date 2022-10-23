@@ -1,4 +1,5 @@
 import * as React from "react";
+import { TouchableOpacity } from "react-native";
 import SVG, { Path } from "react-native-svg";
 
 interface Props {
@@ -10,8 +11,10 @@ interface Props {
 
 const CopperPairSvgComponent = (props: Props) => (
   <SVG
-  viewBox="0 0 25 110" width={`${props.width || 25}`} height={`${props.height || 140}`}
-  preserveAspectRatio="none"
+    viewBox="0 0 25 110"
+    width={`${props.width || 25}`}
+    height={`${props.height || 140}`}
+    preserveAspectRatio="none"
   >
     <Path
       strokeLinecap="round"

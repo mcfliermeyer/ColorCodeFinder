@@ -8,6 +8,7 @@ import {
 import CopperInput from "./components/CopperInput";
 import CopperPairSelector from "./components/CopperPairSelector";
 import CopperPairSvgComponent from "./components/CopperPairSvgComponent";
+import TouchableCopperPairComponent from "./components/TouchableCopperPairComponent";
 import useRingColor from "./hooks/useRingColor";
 import useTipColor from "./hooks/useTipColor";
 
@@ -32,15 +33,7 @@ export default function App() {
   return (
     <View style={styles.container}>
       <CopperPairSelector />
-      <TouchableOpacity
-        style={styles.copperPairContainer}
-        onPress={handlePress}
-      >
-        <CopperPairSvgComponent
-          tipColor={useTipColor(pair)}
-          ringColor={useRingColor(pair)}
-        />
-      </TouchableOpacity>
+      <TouchableCopperPairComponent handlePress={handlePress} pair={pair}/>
       <CopperInput
         pair={pair}
         setPair={setPairNumber}
