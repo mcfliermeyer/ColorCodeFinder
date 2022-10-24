@@ -2,12 +2,17 @@ import { StyleSheet, View, TouchableOpacity, Dimensions } from "react-native";
 import useRingColor from "../hooks/useRingColor";
 import useTipColor from "../hooks/useTipColor";
 import CopperPairSvgComponent from "./CopperPairSvgComponent";
+import TouchableCopperPairComponent from "./TouchableCopperPairComponent";
 
 const screen = Dimensions.get("screen");
 // TODO: measure height to fit 25 pairs on screen without looking crowded
 // TODO figure out why 100% height is not filling whole screen
 
-const CopperPairSelector = () => {
+interface Props {
+  handlePress: () => void,
+}
+
+const CopperPairSelector = ({handlePress}: Props) => {
   const padding = 33;
   const componentWidth = screen.width / 5 - padding * 2;
   const componentHeight = screen.height / 5 - padding * 2;
@@ -16,17 +21,24 @@ const CopperPairSelector = () => {
       {Array.from({ length: 5 }, (_, outter_index) => (
         <View style={styles.wrapper} key={outter_index}>
           {Array.from({ length: 5 }, (_, inner_index) => (
-            <TouchableOpacity
+            // <TouchableOpacity
+            //   style={styles.pairButton}
+            //   key={inner_index + 1 + 5 * outter_index}
+            // >
+            //   <CopperPairSvgComponent
+            //     tipColor={useTipColor(inner_index + 1 + 5 * outter_index)}
+            //     ringColor={useRingColor(inner_index + 1)}
+            //     width={componentWidth}
+            //     height={componentHeight}
+            //   />
+            // </TouchableOpacity>
+            <TouchableCopperPairComponent
               style={styles.pairButton}
-              key={inner_index + 1 + 5 * outter_index}
-            >
-              <CopperPairSvgComponent
-                tipColor={useTipColor(inner_index + 1 + 5 * outter_index)}
-                ringColor={useRingColor(inner_index + 1)}
-                width={componentWidth}
-                height={componentHeight}
-              />
-            </TouchableOpacity>
+              handlePress={handlePress}
+              pair={inner_index + 1 + 5 * outter_index}
+              width={componentWidth}
+              height={componentHeight}
+            />
           ))}
         </View>
       ))}
@@ -42,10 +54,13 @@ const styles = StyleSheet.create({
     // width: "100%",
     position: "absolute",
     padding: 20,
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
+    top: 10,
+    bottom: 10,
+    left: 10,
+    right: 10,
+    zIndex: 1,
+    borderRadius: 10,
+    backgroundColor: "peru",
   },
   wrapper: {
     flex: 1,
@@ -53,12 +68,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     // backgroundColor: "#36393e",
     maxWidth: "100%",
-    backgroundColor: "peru",
+    // backgroundColor: "peru",
     alignItems: "center",
     justifyContent: "center",
   },
   pairButton: {
-    padding: 28,
+    paddingVertical: 28,
   },
 });
 

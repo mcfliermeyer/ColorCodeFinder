@@ -3,14 +3,10 @@ import React from "react";
 import {
   StyleSheet,
   View,
-  TouchableOpacity,
 } from "react-native";
 import CopperInput from "./components/CopperInput";
 import CopperPairSelector from "./components/CopperPairSelector";
-import CopperPairSvgComponent from "./components/CopperPairSvgComponent";
 import TouchableCopperPairComponent from "./components/TouchableCopperPairComponent";
-import useRingColor from "./hooks/useRingColor";
-import useTipColor from "./hooks/useTipColor";
 
 export default function App() {
   const [pair, setPair] = React.useState(0);
@@ -32,7 +28,7 @@ export default function App() {
   };
   return (
     <View style={styles.container}>
-      <CopperPairSelector />
+      <CopperPairSelector handlePress={handlePress}/>
       <TouchableCopperPairComponent handlePress={handlePress} pair={pair}/>
       <CopperInput
         pair={pair}
@@ -53,12 +49,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#36393e",
     alignItems: "center",
     justifyContent: "center",
-  },
-  copperPairContainer: {
-    backgroundColor: "#424549",
-    padding: 5,
-    paddingHorizontal: 50,
-    margin: 15,
-    borderRadius: 10,
+    position: "relative",
   },
 });
