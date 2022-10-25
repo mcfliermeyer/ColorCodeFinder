@@ -12,7 +12,7 @@ interface Props {
 const CopperInput = ({ pair, setPair, addPair, subtractPair }: Props) => {
   return (
     <View style={styles.container}>
-      <ArrowButtonLeft onPress={subtractPair} />
+      <ArrowButtonLeft style={styles.arrowButton} onPress={subtractPair} />
       <TextInput
         style={styles.textInput}
         keyboardType="number-pad"
@@ -20,7 +20,7 @@ const CopperInput = ({ pair, setPair, addPair, subtractPair }: Props) => {
         onChangeText={(newVal) => setPair(Number(newVal))}
         placeholder="pair"
       />
-      <ArrowButtonRight onPress={addPair} />
+      <ArrowButtonRight style={styles.arrowButton} onPress={addPair} />
     </View>
   );
 };
@@ -35,11 +35,16 @@ const styles = StyleSheet.create({
     height: 30,
     width: "20%",
     padding: 5,
-    marginHorizontal: 5,
+    marginHorizontal: 15,
     borderRadius: 5,
     overflow: "hidden",
     textAlign: "center",
     fontSize: 18,
+  },
+  arrowButton: {
+    padding: 10,
+    backgroundColor: "#424549",
+    borderRadius: 8,
   },
 });
 

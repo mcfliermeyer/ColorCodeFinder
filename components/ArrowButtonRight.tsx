@@ -1,13 +1,20 @@
 import * as React from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  StyleProp,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  ViewStyle,
+} from "react-native";
 import Svg, { SvgProps, Path } from "react-native-svg";
 
 interface ArrowButtonProps {
   onPress: () => void;
+  style?: StyleProp<ViewStyle>;
 }
 
 const ArrowButtonRight = (props: ArrowButtonProps) => (
-  <TouchableOpacity onPress={props.onPress}>
+  <TouchableOpacity style={props.style} onPress={props.onPress}>
     <ArrowButtonRightSVG />
   </TouchableOpacity>
 );

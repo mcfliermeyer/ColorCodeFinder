@@ -1,17 +1,26 @@
 import React from "react";
-import { TouchableOpacity, StyleSheet, StyleProp, View, ViewStyle } from "react-native";
+import {
+  TouchableOpacity,
+  StyleSheet,
+  StyleProp,
+  ViewStyle,
+} from "react-native";
 import useRingColor from "../hooks/useRingColor";
 import useTipColor from "../hooks/useTipColor";
 import CopperPairSvgComponent from "./CopperPairSvgComponent";
 
 interface Props {
-  handlePress: () => void,
-  pair: number,
-  height?: number,
-  width?: number,
-  style?: ViewStyle
+  handlePress: () => void;
+  pair: number;
+  height?: number;
+  width?: number;
+  style?: StyleProp<ViewStyle>;
 }
-const TouchableCopperPairComponent = ({ handlePress, pair, ...props }: Props) => {
+const TouchableCopperPairComponent = ({
+  handlePress,
+  pair,
+  ...props
+}: Props) => {
   return (
     <TouchableOpacity style={styles.copperPairContainer} onPress={handlePress}>
       <CopperPairSvgComponent
@@ -28,8 +37,9 @@ const styles = StyleSheet.create({
   copperPairContainer: {
     backgroundColor: "#424549",
     padding: 15,
-    // paddingHorizontal: 50,
-    margin: 15,
+    paddingHorizontal: 22,
+    marginHorizontal: 8,
+    marginBottom: 40,
     borderRadius: 10,
   },
 });
