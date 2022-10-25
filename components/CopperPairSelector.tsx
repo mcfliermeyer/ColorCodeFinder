@@ -1,4 +1,4 @@
-import { StyleSheet, View, TouchableOpacity, Dimensions } from "react-native";
+import { StyleSheet, View, Modal, Dimensions } from "react-native";
 import useRingColor from "../hooks/useRingColor";
 import useTipColor from "../hooks/useTipColor";
 import CopperPairSvgComponent from "./CopperPairSvgComponent";
@@ -9,30 +9,42 @@ const screen = Dimensions.get("screen");
 // TODO: figure out how to autofill height and width
 
 interface Props {
-  handlePress: () => void;
+  handlePairSelected: (pairSelected: number) => void,
+  pairSelectorVisible: boolean,
 }
 
-const CopperPairSelector = ({ handlePress }: Props) => {
+const CopperPairSelector = ({
+  handlePairSelected,
+  pairSelectorVisible,
+}: Props) => {
   const padding = 33;
   const componentWidth = screen.width / 5 - padding * 2;
   const componentHeight = screen.height / 5 - padding * 2;
   return (
-    <View style={styles.pairsContainer}>
-      {Array.from({ length: 5 }, (_, outter_index) => (
-        <View style={styles.wrapper} key={outter_index}>
-          {Array.from({ length: 5 }, (_, inner_index) => (
-            <TouchableCopperPairComponent
-              style={styles.pairButton}
-              handlePress={handlePress}
-              pair={inner_index + 1 + 5 * outter_index}
-              width={componentWidth}
-              height={componentHeight}
-              key={inner_index + 1 + 5 * outter_index}
-            />
-          ))}
-        </View>
-      ))}
-    </View>
+    <Modal
+      animationType="slide"
+      transparent={true}
+      visible={pairSelectorVisible}
+    >
+      <View style={styles.pairsContainer}>
+        {Array.from({ length: 5 }, (_, outter_index) => (
+          <View style={styles.wrapper} key={outter_index}>
+            {Array.from({ length: 5 }, (_, inner_index) => (
+              <TouchableCopperPairComponent
+                style={styles.pairButton}
+                handlePress={() => handlePairSelected(
+                  inner_index + 1 + 5 * outter_index
+                )}
+                pair={inner_index + 1 + 5 * outter_index}
+                width={componentWidth}
+                height={componentHeight}
+                key={inner_index + 1 + 5 * outter_index}
+              />
+            ))}
+          </View>
+        ))}
+      </View>
+    </Modal>
   );
 };
 

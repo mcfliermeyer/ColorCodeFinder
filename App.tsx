@@ -1,15 +1,13 @@
 import { StatusBar } from "expo-status-bar";
 import React from "react";
-import {
-  StyleSheet,
-  View,
-} from "react-native";
+import { StyleSheet, View } from "react-native";
 import CopperInput from "./components/CopperInput";
 import CopperPairSelector from "./components/CopperPairSelector";
 import TouchableCopperPairComponent from "./components/TouchableCopperPairComponent";
 
 export default function App() {
   const [pair, setPair] = React.useState(0);
+  const [pairSelectorVisible, setPairSelectorVisible] = React.useState(false);
   const addPair = () => {
     setPair((oldPair) => {
       return oldPair + 1;
@@ -24,12 +22,19 @@ export default function App() {
     setPair(() => newPair);
   };
   const handlePress = () => {
-    console.log("pressed pair");
+    setPairSelectorVisible(true);
+  };
+  const handlePairSelected = (pairSelected: number) => {
+    setPairSelectorVisible((oldValue) => !oldValue);
+    setPair((oldPair) => pairSelected);
   };
   return (
     <View style={styles.container}>
-      <CopperPairSelector handlePress={handlePress}/>
-      <TouchableCopperPairComponent handlePress={handlePress} pair={pair}/>
+      <CopperPairSelector
+        handlePairSelected={handlePairSelected}
+        pairSelectorVisible={pairSelectorVisible}
+      />
+      <TouchableCopperPairComponent handlePress={handlePress} pair={pair} />
       <CopperInput
         pair={pair}
         setPair={setPairNumber}
