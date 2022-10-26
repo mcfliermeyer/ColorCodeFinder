@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, TextInput, View } from "react-native";
+import {
+  KeyboardAvoidingView,
+  Platform,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 import ArrowButtonLeft from "./ArrowButtonLeft";
 import ArrowButtonRight from "./ArrowButtonRight";
 
@@ -11,12 +18,11 @@ interface Props {
 }
 
 const handleNumberInput = (value: string, setPair: (pair: number) => void) => {
-  const isPositiveNumber = /^\d+$/.test(value) && Number(value) > 0
+  const isPositiveNumber = /^\d+$/.test(value) && Number(value) > 0;
   if (isPositiveNumber) {
-    setPair(Number(value))
-  }
-  else {
-    setPair(0)
+    setPair(Number(value));
+  } else {
+    setPair(0);
   }
 };
 
@@ -24,14 +30,20 @@ const CopperInput = ({ pair, setPair, addPair, subtractPair }: Props) => {
   return (
     <View style={styles.container}>
       <ArrowButtonLeft style={styles.arrowButton} onPress={subtractPair} />
-      <TextInput
-        style={styles.textInput}
-        keyboardType="number-pad"
-        value={pair + ""}
-        onChangeText={(newVal) => handleNumberInput(newVal, setPair)}
-        // onChangeText={(newVal) => setPair(Number(newVal))}
-        placeholder="pair"
-      />
+      {/* <KeyboardAvoidingView
+        style={styles.keyboardView}
+        behavior={Platform.OS === "ios" ? "height" : "height"}
+        keyboardVerticalOffset={50}
+        enabled
+      > */}
+        <TextInput
+          style={styles.textInput}
+          keyboardType="number-pad"
+          value={pair + ""}
+          onChangeText={(newVal) => handleNumberInput(newVal, setPair)}
+          placeholder="pair"
+        />
+      {/* </KeyboardAvoidingView> */}
       <ArrowButtonRight style={styles.arrowButton} onPress={addPair} />
     </View>
   );
@@ -46,8 +58,8 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     height: 30,
     width: "20%",
-    padding: 5,
     marginHorizontal: 15,
+    padding: 5,
     borderRadius: 5,
     overflow: "hidden",
     textAlign: "center",

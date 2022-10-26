@@ -1,6 +1,13 @@
 import { StatusBar } from "expo-status-bar";
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import {
+  TouchableWithoutFeedback,
+  StyleSheet,
+  View,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+} from "react-native";
 import CopperInput from "./components/CopperInput";
 import CopperPairSelector from "./components/CopperPairSelector";
 import TouchableCopperPairComponent from "./components/TouchableCopperPairComponent";
@@ -33,19 +40,25 @@ export default function App() {
     setPair((oldPair) => pairSelected);
   };
   return (
-    <View style={styles.container}>
-      <CopperPairSelector
-        handlePairSelected={handlePairSelected}
-        pairSelectorVisible={pairSelectorVisible}
-      />
-      <TouchableCopperPairComponent handlePress={handlePress} pair={pair} />
-      <CopperInput
-        pair={pair}
-        setPair={setPairNumber}
-        addPair={addPair}
-        subtractPair={subtractPair}
-      />
-    </View>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
+        enabled
+      >
+        <CopperPairSelector
+          handlePairSelected={handlePairSelected}
+          pairSelectorVisible={pairSelectorVisible}
+        />
+        <TouchableCopperPairComponent handlePress={handlePress} pair={pair} />
+        <CopperInput
+          pair={pair}
+          setPair={setPairNumber}
+          addPair={addPair}
+          subtractPair={subtractPair}
+        />
+        </KeyboardAvoidingView>
+    </TouchableWithoutFeedback>
   );
 }
 
