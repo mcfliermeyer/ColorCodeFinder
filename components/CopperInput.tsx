@@ -9,6 +9,17 @@ interface Props {
   addPair: () => void;
   subtractPair: () => void;
 }
+
+const handleNumberInput = (value: string, setPair: (pair: number) => void) => {
+  const isPositiveNumber = /^\d+$/.test(value) && Number(value) > 0
+  if (isPositiveNumber) {
+    setPair(Number(value))
+  }
+  else {
+    setPair(0)
+  }
+};
+
 const CopperInput = ({ pair, setPair, addPair, subtractPair }: Props) => {
   return (
     <View style={styles.container}>
@@ -17,7 +28,8 @@ const CopperInput = ({ pair, setPair, addPair, subtractPair }: Props) => {
         style={styles.textInput}
         keyboardType="number-pad"
         value={pair + ""}
-        onChangeText={(newVal) => setPair(Number(newVal))}
+        onChangeText={(newVal) => handleNumberInput(newVal, setPair)}
+        // onChangeText={(newVal) => setPair(Number(newVal))}
         placeholder="pair"
       />
       <ArrowButtonRight style={styles.arrowButton} onPress={addPair} />

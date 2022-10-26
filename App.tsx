@@ -5,17 +5,21 @@ import CopperInput from "./components/CopperInput";
 import CopperPairSelector from "./components/CopperPairSelector";
 import TouchableCopperPairComponent from "./components/TouchableCopperPairComponent";
 
+//TODO: make sure no letters cannot be typed into CopperInput and it cannot go below 1 por favor
+
 export default function App() {
   const [pair, setPair] = React.useState(0);
   const [pairSelectorVisible, setPairSelectorVisible] = React.useState(false);
   const addPair = () => {
     setPair((oldPair) => {
-      return oldPair + 1;
+      if (oldPair >= 0) return oldPair + 1;
+      return 0;
     });
   };
   const subtractPair = () => {
     setPair((oldPair) => {
-      return oldPair - 1;
+      if (oldPair >= 1) return oldPair - 1;
+      return 0;
     });
   };
   const setPairNumber = (newPair: number) => {
