@@ -8,11 +8,10 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from "react-native";
-import CopperInput from "./components/CopperInput";
-import CopperPairSelector from "./components/CopperPairSelector";
-import TouchableCopperPairComponent from "./components/TouchableCopperPairComponent";
-
-//TODO: make sure no letters cannot be typed into CopperInput and it cannot go below 1 por favor
+import CopperInput from "./components/copper/CopperInput";
+import CopperPairSelector from "./components/copper/CopperPairSelector";
+import TouchableCopperPairComponent from "./components/copper/TouchableCopperPairComponent";
+import FiberCableSvg from "./components/fiber/FiberCableSvg";
 
 export default function App() {
   const [pair, setPair] = React.useState(0);
@@ -57,7 +56,8 @@ export default function App() {
           addPair={addPair}
           subtractPair={subtractPair}
         />
-        </KeyboardAvoidingView>
+        <FiberCableSvg />
+      </KeyboardAvoidingView>
     </TouchableWithoutFeedback>
   );
 }

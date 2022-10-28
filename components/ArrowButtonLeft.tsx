@@ -1,10 +1,16 @@
 import * as React from "react";
-import { StyleProp, StyleSheet, Text, TouchableOpacity, ViewStyle } from "react-native";
+import {
+  StyleProp,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  ViewStyle,
+} from "react-native";
 import Svg, { SvgProps, Path } from "react-native-svg";
 
 interface ArrowButtonProps {
-  onPress: () => void,
-  style?: StyleProp<ViewStyle>
+  onPress: () => void;
+  style?: StyleProp<ViewStyle>;
 }
 
 const ArrowButtonLeft = (props: ArrowButtonProps) => (
@@ -13,9 +19,7 @@ const ArrowButtonLeft = (props: ArrowButtonProps) => (
   </TouchableOpacity>
 );
 
-const styles = StyleSheet.create({
-
-})
+const styles = StyleSheet.create({});
 
 const ArrowButtonLeftSVG = (props: SvgProps) => (
   <Svg viewBox="8 8.202 59.513 111.362" width={24} height={24} {...props}>

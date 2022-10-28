@@ -1,14 +1,7 @@
-import React, { useState } from "react";
-import {
-  KeyboardAvoidingView,
-  Platform,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
-import ArrowButtonLeft from "./ArrowButtonLeft";
-import ArrowButtonRight from "./ArrowButtonRight";
+import React from "react";
+import { StyleSheet, TextInput, View } from "react-native";
+import ArrowButtonLeft from "../ArrowButtonLeft";
+import ArrowButtonRight from "../ArrowButtonRight";
 
 interface Props {
   pair: number;
@@ -30,20 +23,13 @@ const CopperInput = ({ pair, setPair, addPair, subtractPair }: Props) => {
   return (
     <View style={styles.container}>
       <ArrowButtonLeft style={styles.arrowButton} onPress={subtractPair} />
-      {/* <KeyboardAvoidingView
-        style={styles.keyboardView}
-        behavior={Platform.OS === "ios" ? "height" : "height"}
-        keyboardVerticalOffset={50}
-        enabled
-      > */}
-        <TextInput
-          style={styles.textInput}
-          keyboardType="number-pad"
-          value={pair + ""}
-          onChangeText={(newVal) => handleNumberInput(newVal, setPair)}
-          placeholder="pair"
-        />
-      {/* </KeyboardAvoidingView> */}
+      <TextInput
+        style={styles.textInput}
+        keyboardType="number-pad"
+        value={pair + ""}
+        onChangeText={(newVal) => handleNumberInput(newVal, setPair)}
+        placeholder="pair"
+      />
       <ArrowButtonRight style={styles.arrowButton} onPress={addPair} />
     </View>
   );

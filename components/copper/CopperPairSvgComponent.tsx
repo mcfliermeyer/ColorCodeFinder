@@ -1,6 +1,7 @@
 import * as React from "react";
 import { TouchableOpacity } from "react-native";
-import SVG, { Path } from "react-native-svg";
+import SVG, { Path, G } from "react-native-svg";
+// import Svg, { SvgProps, G, Path, Rect } from "react-native-svg";
 
 interface Props {
   tipColor: string;
@@ -38,5 +39,4 @@ const CopperPairSvgComponent = (props: Props) => (
     />
   </SVG>
 );
-
 export default CopperPairSvgComponent;

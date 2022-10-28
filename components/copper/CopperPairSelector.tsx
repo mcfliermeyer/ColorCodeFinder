@@ -1,6 +1,6 @@
 import { StyleSheet, View, Modal, Dimensions } from "react-native";
-import useRingColor from "../hooks/useRingColor";
-import useTipColor from "../hooks/useTipColor";
+import useRingColor from "../../hooks/useRingColor";
+import useTipColor from "../../hooks/useTipColor";
 import CopperPairSvgComponent from "./CopperPairSvgComponent";
 import TouchableCopperPairComponent from "./TouchableCopperPairComponent";
 
@@ -9,15 +9,15 @@ const screen = Dimensions.get("screen");
 // TODO: figure out how to autofill height and width
 
 interface Props {
-  handlePairSelected: (pairSelected: number) => void,
-  pairSelectorVisible: boolean,
+  handlePairSelected: (pairSelected: number) => void;
+  pairSelectorVisible: boolean;
 }
 
 const CopperPairSelector = ({
   handlePairSelected,
   pairSelectorVisible,
 }: Props) => {
-  const padding = 33;
+  const padding = 31;
   const componentWidth = screen.width / 5 - padding * 2;
   const componentHeight = screen.height / 5 - padding * 2;
   return (
@@ -32,9 +32,9 @@ const CopperPairSelector = ({
             {Array.from({ length: 5 }, (_, inner_index) => (
               <TouchableCopperPairComponent
                 style={styles.pairButton}
-                handlePress={() => handlePairSelected(
-                  inner_index + 1 + 5 * outter_index
-                )}
+                handlePress={() =>
+                  handlePairSelected(inner_index + 1 + 5 * outter_index)
+                }
                 pair={inner_index + 1 + 5 * outter_index}
                 width={componentWidth}
                 height={componentHeight}
@@ -69,7 +69,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     backgroundColor: "#36393e",
     maxWidth: "100%",
-    // backgroundColor: "peru",
     alignItems: "center",
     justifyContent: "center",
   },
