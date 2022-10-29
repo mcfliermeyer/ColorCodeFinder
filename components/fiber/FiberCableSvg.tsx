@@ -2,10 +2,19 @@ import * as React from "react";
 import { TouchableOpacity } from "react-native";
 import SVG, { Path, Rect, Polyline } from "react-native-svg";
 
-interface Props {}
+interface Props {
+  height?: number;
+  width?: number;
+  fiber: number;
+}
 
 const FiberCableSvg = (props: Props) => (
-  <SVG viewBox="0 0 66 171" {...props}>
+  <SVG
+    viewBox="0 0 66 171"
+    width={props.width}
+    height={props.height}
+    {...props}
+  >
     <Path
       stroke="#f79606"
       strokeWidth={9}

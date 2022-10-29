@@ -10,7 +10,10 @@ interface Props {
   subtractFiber: () => void;
 }
 
-const handleNumberInput = (value: string, setFiber: (fiber: number) => void) => {
+const handleNumberInput = (
+  value: string,
+  setFiber: (fiber: number) => void
+) => {
   const isPositiveNumber = /^\d+$/.test(value) && Number(value) > 0;
   if (isPositiveNumber) {
     setFiber(Number(value));
@@ -28,7 +31,6 @@ const FiberInput = ({ fiber, setFiber, addFiber, subtractFiber }: Props) => {
         keyboardType="number-pad"
         value={fiber + ""}
         onChangeText={(newVal) => handleNumberInput(newVal, setFiber)}
-        placeholder="fiber"
       />
       <ArrowButtonRight style={styles.arrowButton} onPress={addFiber} />
     </View>
