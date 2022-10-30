@@ -20,10 +20,12 @@ import TouchableCopperPairComponent from "./components/copper/TouchableCopperPai
 import FiberCableSvg from "./components/fiber/FiberCableSvg";
 import FiberInput from "./components/fiber/FiberInput";
 import TouchableFiberComponent from "./components/fiber/TouchableFiberComponent";
+import useFiberColor from "./hooks/useFiberColor";
 
 export default function App() {
   const [pair, setPair] = React.useState(0);
   const [pairSelectorVisible, setPairSelectorVisible] = React.useState(false);
+  const [fiber, setFiber] = React.useState(3); //default to 3 because fiber view shows 5 fibers. looks better?
   const addPair = () => {
     setPair((oldPair) => {
       if (oldPair >= 0) return oldPair + 1;
@@ -47,9 +49,8 @@ export default function App() {
     setPair((oldPair) => pairSelected);
   };
   const handleFiberPress = () => {
-    console.log("fiber pressed");
   };
-  const [fiber, setFiber] = React.useState(3); //default to 3 because fiber view shows 5 fibers. looks better?
+
   const addFiber = () => {
     setFiber((oldFiber) => {
       if (oldFiber >= 0) return oldFiber + 1;
@@ -85,7 +86,7 @@ export default function App() {
           subtractPair={subtractPair}
         /> */}
         <TouchableFiberComponent
-          fiber={3}
+          fiber={fiber}
           handlePress={handleFiberPress}
           height={480}
           width={180}
