@@ -1,10 +1,3 @@
-//TODO create seperate copper and fiber components
-//TODO useFiber hook
-//TODO setfiber add fiber subtract fiber
-//TODO get all fiber colors set to variables
-//TODO when fiber changes, have all 5 fibers in svg match what they should be
-
-import { StatusBar } from "expo-status-bar";
 import React from "react";
 import {
   TouchableWithoutFeedback,
@@ -84,7 +77,7 @@ export default function App() {
           addPair={addPair}
           subtractPair={subtractPair}
         />
-        {/* <TouchableFiberComponent
+        <TouchableFiberComponent
           fiber={fiber}
           handlePress={handleFiberPress}
           height={480}
@@ -95,7 +88,7 @@ export default function App() {
           setFiber={setFiberNumber}
           addFiber={addFiber}
           subtractFiber={subtractFiber}
-        /> */}
+        />
       </KeyboardAvoidingView>
     </TouchableWithoutFeedback>
   );

@@ -5,9 +5,6 @@ import CopperPairSvgComponent from "./CopperPairSvgComponent";
 import TouchableCopperPairComponent from "./TouchableCopperPairComponent";
 
 const screen = Dimensions.get("screen");
-// TODO: measure height to fit 25 pairs on screen without looking crowded
-// TODO: figure out how to autofill height and width
-
 interface Props {
   handlePairSelected: (pairSelected: number) => void;
   pairSelectorVisible: boolean;

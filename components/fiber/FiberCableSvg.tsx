@@ -1,6 +1,4 @@
-import * as React from "react";
-import { TouchableOpacity } from "react-native";
-import SVG, { Path, Rect, } from "react-native-svg";
+import SVG, { Path, Rect } from "react-native-svg";
 import useFiberColor from "../../hooks/useFiberColor";
 
 interface Props {
@@ -10,7 +8,6 @@ interface Props {
 }
 
 const FiberCableSvg = (props: Props) => {
-  console.log(useFiberColor(props.fiber));
   return (
     <SVG
       viewBox="0 0 66 171"
@@ -20,12 +17,16 @@ const FiberCableSvg = (props: Props) => {
     >
       <Path
         strokeWidth={9}
-        stroke={props.fiber - 2 === 0 ? "#424549" : useFiberColor(props.fiber - 2)}
+        stroke={
+          props.fiber - 2 === 0 ? "#424549" : useFiberColor(props.fiber - 2)
+        }
         d="m6.373 37 .423 36.523"
         transform="translate(1.127)"
       />
       <Path
-        stroke={props.fiber - 1 === 0 ? "#424549" : useFiberColor(props.fiber - 1)}
+        stroke={
+          props.fiber - 1 === 0 ? "#424549" : useFiberColor(props.fiber - 1)
+        }
         strokeWidth={9}
         origin="0.5 0.36"
         d="m13.648 22 .423 50"

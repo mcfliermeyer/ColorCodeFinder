@@ -2,7 +2,6 @@ import * as React from "react";
 import {
   StyleProp,
   StyleSheet,
-  Text,
   TouchableOpacity,
   ViewStyle,
 } from "react-native";
@@ -18,8 +17,6 @@ const ArrowButtonLeft = (props: ArrowButtonProps) => (
     <ArrowButtonLeftSVG />
   </TouchableOpacity>
 );
-
-const styles = StyleSheet.create({});
 
 const ArrowButtonLeftSVG = (props: SvgProps) => (
   <Svg viewBox="8 8.202 59.513 111.362" width={24} height={24} {...props}>
