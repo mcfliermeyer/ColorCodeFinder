@@ -29,13 +29,13 @@ export default function App() {
   const addPair = () => {
     setPair((oldPair) => {
       if (oldPair >= 0) return oldPair + 1;
-      return 0;
+      return 1;
     });
   };
   const subtractPair = () => {
     setPair((oldPair) => {
       if (oldPair > 1) return oldPair - 1;
-      return 0;
+      return 1;
     });
   };
   const setPairNumber = (newPair: number) => {
@@ -48,19 +48,18 @@ export default function App() {
     setPairSelectorVisible((oldValue) => !oldValue);
     setPair((oldPair) => pairSelected);
   };
-  const handleFiberPress = () => {
-  };
+  const handleFiberPress = () => {};
 
   const addFiber = () => {
     setFiber((oldFiber) => {
       if (oldFiber >= 0) return oldFiber + 1;
-      return 0;
+      return 1;
     });
   };
   const subtractFiber = () => {
     setFiber((oldFiber) => {
       if (oldFiber > 1) return oldFiber - 1;
-      return 0;
+      return 1;
     });
   };
   const setFiberNumber = (newFiber: number) => {
@@ -74,7 +73,7 @@ export default function App() {
         behavior={Platform.OS === "ios" ? "padding" : undefined}
         enabled
       >
-        {/* <CopperPairSelector
+        <CopperPairSelector
           handlePairSelected={handlePairSelected}
           pairSelectorVisible={pairSelectorVisible}
         />
@@ -84,8 +83,8 @@ export default function App() {
           setPair={setPairNumber}
           addPair={addPair}
           subtractPair={subtractPair}
-        /> */}
-        <TouchableFiberComponent
+        />
+        {/* <TouchableFiberComponent
           fiber={fiber}
           handlePress={handleFiberPress}
           height={480}
@@ -96,7 +95,7 @@ export default function App() {
           setFiber={setFiberNumber}
           addFiber={addFiber}
           subtractFiber={subtractFiber}
-        />
+        /> */}
       </KeyboardAvoidingView>
     </TouchableWithoutFeedback>
   );

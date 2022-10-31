@@ -1,33 +1,14 @@
-type Props = { pairNumber: number };
-enum TipColor {
-  White = 0,
-  Red,
-  Black,
-  Yellow,
-  Violet,
-}
+import { copperTipColorDictionary } from "../components/utilities/utilities";
+
 const useTipColor = (pairNumber: number) => {
-  let pair = pairNumber;
+  let pair = pairNumber
   if (pairNumber > 25) {
-    pair = pairNumber % 25;
-    if (pair === 0) {
-      return "mediumorchid";
-    }
+    if (pairNumber % 25 === 0) return copperTipColorDictionary[4]
+    pair = (pairNumber) % 25
   }
-  const ringNumber = (pair - 1 - ((pair - 1) % 5)) / 5;
-  switch (ringNumber) {
-    case TipColor.White:
-      return "white";
-    case TipColor.Red:
-      return "red";
-    case TipColor.Black:
-      return "black";
-    case TipColor.Yellow:
-      return "yellow";
-    case TipColor.Violet:
-      return "mediumorchid";
-    default:
-      return "aqua";
-  }
+  const remainder = (pair - 1) % 5;
+  const base = (pair - 1) - remainder;
+  const tipNumber = base / 5;
+  return copperTipColorDictionary[tipNumber];
 };
 export default useTipColor;

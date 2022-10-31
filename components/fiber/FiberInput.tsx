@@ -18,7 +18,7 @@ const handleNumberInput = (
   if (isPositiveNumber) {
     setFiber(Number(value));
   } else {
-    setFiber(0);
+    setFiber(1);
   }
 };
 
