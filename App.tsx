@@ -2,7 +2,6 @@ import React from "react";
 import {
   TouchableWithoutFeedback,
   StyleSheet,
-  View,
   Keyboard,
   KeyboardAvoidingView,
   Platform,
@@ -66,7 +65,7 @@ export default function App() {
         behavior={Platform.OS === "ios" ? "padding" : undefined}
         enabled
       >
-        <CopperPairSelector
+        {/* <CopperPairSelector
           handlePairSelected={handlePairSelected}
           pairSelectorVisible={pairSelectorVisible}
         />
@@ -76,7 +75,7 @@ export default function App() {
           setPair={setPairNumber}
           addPair={addPair}
           subtractPair={subtractPair}
-        />
+        /> */}
         <TouchableFiberComponent
           fiber={fiber}
           handlePress={handleFiberPress}
