@@ -17,8 +17,21 @@ const highlightStrandSvg = (
   const lightenFiber = l + 25;
 
   return [...Array(howManyStrokes)].map((e, i) => {
+    const redlightAlphaStepDown = 0.15 / howManyStrokes;
+    const redlightAlpha = 0.15 - redlightAlphaStepDown * i;
+    const startYStepUp = -2.7 / howManyStrokes
+    const currentStartY = -2.7 + startYStepUp * i
+    const endYStepUp = -5 / howManyStrokes
+    const currentEndY = -5 - endYStepUp * i
     return (
       <G key={i}>
+        {/* redlight*/}
+        <Path
+          stroke={`hsl(0, 100%, 50%, ${redlightAlpha})`}
+          strokeWidth={0.9}
+          d={`M32.5 ${currentStartY} l0 0 0 ${currentEndY}`}
+        />
+        {/* main column of fiber */}
         <Path
           stroke={`hsl(${h}, ${s}%, ${lightenFiber + i}%, ${1.0 - i / 12})`}
           strokeWidth={strokeSize}
@@ -26,6 +39,7 @@ const highlightStrandSvg = (
             32.5 + i * strokeSize
           } 0 l0 18`}
         />
+        {/* curved top of fiber */}
         <Path
           stroke={`hsl(${h}, ${s}%, ${lightenFiber + i}%, ${1.0 - i / 12})`}
           strokeWidth={strokeSize}
@@ -33,11 +47,6 @@ const highlightStrandSvg = (
               m${32.5 - i * strokeSize} 0 
               C${32.5 - i * strokeSize} 0 32.5 -5 ${32.5 + i * strokeSize} 0
             `}
-        />
-        <Path
-          stroke={"red"}
-          strokeWidth={.5}
-          d={`M32.25 -2.8 l0 0 0 -10`}
         />
       </G>
     );
@@ -52,7 +61,7 @@ const FiberCableSvg = (props: Props) => {
       height={props.height}
       {...props}
     >
-      {highlightStrandSvg(15, 0.2, useFiberColor(props.fiber))}
+      {highlightStrandSvg(10, 0.15, useFiberColor(props.fiber))}
       <Path
         strokeWidth={9}
         stroke={
@@ -72,7 +81,6 @@ const FiberCableSvg = (props: Props) => {
         y="17"
         width="9"
         height="59"
-        stroke="#1d4be2"
         fill={useFiberColor(props.fiber)}
         strokeWidth={0.3}
       />

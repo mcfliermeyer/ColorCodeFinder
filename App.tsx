@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import {
   TouchableWithoutFeedback,
   StyleSheet,
   Keyboard,
   KeyboardAvoidingView,
   Platform,
+  Animated,
 } from "react-native";
 import CopperInput from "./components/copper/CopperInput";
 import CopperPairSelector from "./components/copper/CopperPairSelector";
@@ -18,6 +19,16 @@ export default function App() {
   const [pair, setPair] = React.useState(0);
   const [pairSelectorVisible, setPairSelectorVisible] = React.useState(false);
   const [fiber, setFiber] = React.useState(3); //default to 3 because fiber view shows 5 fibers. looks better?
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 1000,
+      useNativeDriver: false,
+    }).start();
+  }, [fadeAnim]);
+
   const addPair = () => {
     setPair((oldPair) => {
       if (oldPair >= 0) return oldPair + 1;
