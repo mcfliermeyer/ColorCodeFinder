@@ -1,4 +1,6 @@
-import SVG, { Path, Rect, G } from "react-native-svg";
+import { useRef } from "react";
+import { Animated, ViewProps } from "react-native";
+import SVG, { Path, Rect, G, SvgProps } from "react-native-svg";
 import useFiberColor from "../../hooks/useFiberColor";
 import hexToHSL from "../utilities/hexToHSL";
 
@@ -6,8 +8,9 @@ interface Props {
   height?: number;
   width?: number;
   fiber: number;
+  // fadeAnim: any;
 }
-// attempting to highlight fiber strand to make it "lit up"
+
 const highlightStrandSvg = (
   howManyStrokes: number,
   strokeSize: number,
@@ -19,10 +22,10 @@ const highlightStrandSvg = (
   return [...Array(howManyStrokes)].map((e, i) => {
     const redlightAlphaStepDown = 0.15 / howManyStrokes;
     const redlightAlpha = 0.15 - redlightAlphaStepDown * i;
-    const startYStepUp = -2.7 / howManyStrokes
-    const currentStartY = -2.7 + startYStepUp * i
-    const endYStepUp = -5 / howManyStrokes
-    const currentEndY = -5 - endYStepUp * i
+    const startYStepUp = -2.7 / howManyStrokes;
+    const currentStartY = -2.7 + startYStepUp * i;
+    const endYStepUp = -5 / howManyStrokes;
+    const currentEndY = -5 - endYStepUp * i;
     return (
       <G key={i}>
         {/* redlight*/}
@@ -59,9 +62,8 @@ const FiberCableSvg = (props: Props) => {
       viewBox="0 -5 66 171"
       width={props.width}
       height={props.height}
-      {...props}
     >
-      {highlightStrandSvg(10, 0.15, useFiberColor(props.fiber))}
+      {highlightStrandSvg(10, 0.12, useFiberColor(props.fiber))}
       <Path
         strokeWidth={9}
         stroke={

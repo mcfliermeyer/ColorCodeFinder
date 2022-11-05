@@ -12,6 +12,7 @@ import CopperPairSelector from "./components/copper/CopperPairSelector";
 import TouchableCopperPairComponent from "./components/copper/TouchableCopperPairComponent";
 import FiberCableSvg from "./components/fiber/FiberCableSvg";
 import FiberInput from "./components/fiber/FiberInput";
+import Redlight from "./components/fiber/Redlight";
 import TouchableFiberComponent from "./components/fiber/TouchableFiberComponent";
 import useFiberColor from "./hooks/useFiberColor";
 
@@ -19,15 +20,8 @@ export default function App() {
   const [pair, setPair] = React.useState(0);
   const [pairSelectorVisible, setPairSelectorVisible] = React.useState(false);
   const [fiber, setFiber] = React.useState(3); //default to 3 because fiber view shows 5 fibers. looks better?
-  const fadeAnim = useRef(new Animated.Value(0)).current;
 
-  useEffect(() => {
-    Animated.timing(fadeAnim, {
-      toValue: 1,
-      duration: 1000,
-      useNativeDriver: false,
-    }).start();
-  }, [fadeAnim]);
+
 
   const addPair = () => {
     setPair((oldPair) => {
@@ -87,6 +81,7 @@ export default function App() {
           addPair={addPair}
           subtractPair={subtractPair}
         /> */}
+        <Redlight />
         <TouchableFiberComponent
           fiber={fiber}
           handlePress={handleFiberPress}
