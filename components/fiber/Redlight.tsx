@@ -1,40 +1,14 @@
-import { useRef, useState } from "react";
+import React from "react";
 import { Animated, TouchableOpacity, StyleSheet } from "react-native";
-import SVG, { Path, Rect, G, SvgProps, Image, SvgUri } from "react-native-svg";
-import RedlightSVG from "./RedlightSVG";
+import SVG, { Path } from "react-native-svg";
+import useRequestAnimationFrame from "../../hooks/useRequestAnimationFrame";
 
 const Redlight = () => {
-  const fadeAnim = useRef(new Animated.Value(0)).current;
-  const [redLightVisible, setRedLightVisible] = useState(true);
-
-  const fadeIn = () => {
-    return Animated.timing(fadeAnim, {
-      toValue: 1,
-      duration: 1000,
-      useNativeDriver: true,
-    }).start();
-  };
-  const fadeOut = () => {
-    return Animated.timing(fadeAnim, {
-      toValue: 0,
-      duration: 1000,
-      useNativeDriver: true,
-    }).start();
-  };
-  const fadeInOrOut = () => {
-    if (redLightVisible) {
-      setRedLightVisible((prev) => !prev);
-      fadeOut();
-    } else {
-      setRedLightVisible((prev) => !prev);
-      fadeIn();
-    }
-  };
-  setInterval(fadeInOrOut, 1000)
+  const animation = useRequestAnimationFrame(500);
 
   return (
-    <TouchableOpacity style={styles.container} onPress={fadeInOrOut}>
-      <Animated.View style={{ opacity: fadeAnim, ...styles.view }}>
+    <TouchableOpacity style={styles.container}>
+      <Animated.View style={{ opacity: animation, ...styles.view }}>
         <SVG>
           <Path
             stroke={`hsl(0, 100%, 50%, 1)`}
