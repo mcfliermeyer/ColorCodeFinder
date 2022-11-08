@@ -81,7 +81,6 @@ export default function App() {
           addPair={addPair}
           subtractPair={subtractPair}
         /> */}
-        <Redlight />
         <TouchableFiberComponent
           fiber={fiber}
           handlePress={handleFiberPress}

@@ -8,7 +8,6 @@ interface Props {
   height?: number;
   width?: number;
   fiber: number;
-  // fadeAnim: any;
 }
 
 const highlightStrandSvg = (
@@ -29,11 +28,11 @@ const highlightStrandSvg = (
     return (
       <G key={i}>
         {/* redlight*/}
-        <Path
+        {/* <Path
           stroke={`hsl(0, 100%, 50%, ${redlightAlpha})`}
           strokeWidth={0.9}
           d={`M32.5 ${currentStartY} l0 0 0 ${currentEndY}`}
-        />
+        /> */}
         {/* main column of fiber */}
         <Path
           stroke={`hsl(${h}, ${s}%, ${lightenFiber + i}%, ${1.0 - i / 12})`}
@@ -59,7 +58,7 @@ const highlightStrandSvg = (
 const FiberCableSvg = (props: Props) => {
   return (
     <SVG
-      viewBox="0 -5 66 171"
+      viewBox="0 0 66 171"
       width={props.width}
       height={props.height}
     >
