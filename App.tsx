@@ -65,7 +65,8 @@ export default function App() {
   };
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+    // for scroll to work, this cannot wrap whole screen, as it will remove and gestures i think
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}> 
       <KeyboardAvoidingView
         style={styles.container}
         behavior={Platform.OS === "ios" ? "padding" : undefined}

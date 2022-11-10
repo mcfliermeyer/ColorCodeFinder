@@ -6,34 +6,46 @@ import { fiberColorDictionary } from "../utilities/utilities";
 
 type Props = {};
 const ScrollableFiber = (props: Props) => {
+
+  const createData = () => {
+    const myArray = Array.from({length: 20}, (e,i) => i+1)
+    const mapped = myArray.map((e,i) => {
+      return {fiberColor: useFiberColor(e), fiberNumber: e}
+    })
+    return mapped
+  }
+
   return (
-    <FlatList
-      style={styles.container}
-      data={Array.from({ length: 22 }, (_, i) => i)}
-      renderItem={(item) => (
-        <View style={styles.view}>
-          <SVG>
-            <Rect
-              x="10"
-              y="17"
-              width="9"
-              height="59"
-              fill={useFiberColor(Number(item))}
-              strokeWidth={0.3}
-            />
-          </SVG>
-        </View>
-      )}
-      keyExtractor={(item, index) => fiberColorDictionary[index] + `${index}`}
-    />
+    <View>
+      <FlatList
+        style={styles.container}
+        data={createData()}
+        renderItem={({ item }) => (
+          <View style={styles.view}>
+            <SVG>
+              <Rect
+                x="10"
+                y="17"
+                width="9"
+                height="59"
+                fill={item.fiberColor}
+                strokeWidth={0.3}
+              />
+            </SVG>
+          </View>
+        )}
+        keyExtractor={(item, index) => fiberColorDictionary[index] + `${index}`}
+        horizontal={true}
+      />
+    </View>
   );
 };
 export default ScrollableFiber;
 
 const styles = StyleSheet.create({
   container: {
-    width: 100,
     height: 100,
+    marginTop: 200,
   },
   view: {
     backgroundColor: "#C0C2C9",
