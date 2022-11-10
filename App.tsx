@@ -13,6 +13,7 @@ import TouchableCopperPairComponent from "./components/copper/TouchableCopperPai
 import FiberCableSvg from "./components/fiber/FiberCableSvg";
 import FiberInput from "./components/fiber/FiberInput";
 import Redlight from "./components/fiber/Redlight";
+import ScrollableFiber from "./components/fiber/ScrollableFiber";
 import TouchableFiberComponent from "./components/fiber/TouchableFiberComponent";
 import useFiberColor from "./hooks/useFiberColor";
 
@@ -81,7 +82,7 @@ export default function App() {
           addPair={addPair}
           subtractPair={subtractPair}
         /> */}
-        <TouchableFiberComponent
+        {/* <TouchableFiberComponent
           fiber={fiber}
           handlePress={handleFiberPress}
           height={480}
@@ -92,7 +93,8 @@ export default function App() {
           setFiber={setFiberNumber}
           addFiber={addFiber}
           subtractFiber={subtractFiber}
-        />
+        /> */}
+        <ScrollableFiber />
       </KeyboardAvoidingView>
     </TouchableWithoutFeedback>
   );
