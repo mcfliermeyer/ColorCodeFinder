@@ -17,6 +17,13 @@ const itemSize = (screenWidth - horizontalMargin * 2) / 5;
 
 type Props = {};
 const ScrollableFiber = (props: Props) => {
+  const ref = React.useRef<FlatList>(null);
+  const [index, setIndex] = React.useState(9);
+
+  // React.useEffect(() => {
+  //   ref.current?.scrollToIndex({animated: true, index: index})
+  // }, [])
+
   const createData = () => {
     const myArray = Array.from({ length: 24 }, (e, i) => i + 1);
     const mapped = myArray.map((e, i) => {
@@ -27,8 +34,10 @@ const ScrollableFiber = (props: Props) => {
 
   return (
     <FlatList
+      ref={ref}
       style={styles.container}
       data={createData()}
+      initialScrollIndex={index} //problem with this working
       renderItem={({ item }) => (
         <View style={styles.view}>
           <SVG>
@@ -53,12 +62,10 @@ const ScrollableFiber = (props: Props) => {
 };
 export default ScrollableFiber;
 
-
-
 const styles = StyleSheet.create({
   container: {
     flexGrow: 0,
-    height: 150, 
+    height: 150,
     width: screenWidth - horizontalMargin * 2,
     backgroundColor: "orange",
   },
