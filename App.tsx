@@ -6,6 +6,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   Animated,
+  View,
 } from "react-native";
 import CopperInput from "./components/copper/CopperInput";
 import CopperPairSelector from "./components/copper/CopperPairSelector";
@@ -21,8 +22,6 @@ export default function App() {
   const [pair, setPair] = React.useState(0);
   const [pairSelectorVisible, setPairSelectorVisible] = React.useState(false);
   const [fiber, setFiber] = React.useState(3); //default to 3 because fiber view shows 5 fibers. looks better?
-
-
 
   const addPair = () => {
     setPair((oldPair) => {
@@ -66,7 +65,7 @@ export default function App() {
 
   return (
     // for scroll to work, this cannot wrap whole screen, as it will remove and gestures i think
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}> 
+    <View style={styles.container}>
       <KeyboardAvoidingView
         style={styles.container}
         behavior={Platform.OS === "ios" ? "padding" : undefined}
@@ -95,9 +94,10 @@ export default function App() {
           addFiber={addFiber}
           subtractFiber={subtractFiber}
         /> */}
+        
         <ScrollableFiber />
       </KeyboardAvoidingView>
-    </TouchableWithoutFeedback>
+    </View>
   );
 }
 
