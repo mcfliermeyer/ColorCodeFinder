@@ -25,10 +25,10 @@ interface Props {
 
 const ScrollableFiber = (props: Props) => {
   const ref = React.useRef<FlatList>(null);
-  const [index, setIndex] = React.useState(9);
+  const [fiber, setFiber] = React.useState(5);
 
   // React.useEffect(() => {
-  //   ref.current?.scrollToIndex({animated: true, index: index})
+  //   ref.current?.scrollToIndex({animated: true, index: fiber - 1})
   // }, [])
 
   const createData = () => {
@@ -45,7 +45,7 @@ const ScrollableFiber = (props: Props) => {
         ref={ref}
         style={styles.flatlist}
         data={createData()}
-        initialScrollIndex={index} //problem with this working
+        initialScrollIndex={fiber - 1} //problem with this working
         renderItem={({ item }) => (
           <View style={styles.view}>
             <SVG>
@@ -65,10 +65,15 @@ const ScrollableFiber = (props: Props) => {
         snapToAlignment="start"
         decelerationRate={"normal"}
         snapToInterval={itemSize}
+        getItemLayout={(data, index) => ({
+          length: itemSize,
+          offset: (itemSize) * index,
+          index: index,
+        })}
       />
       <View style={styles.fiberInputWrapper}>
         <FiberInput
-          fiber={index}
+          fiber={fiber}
           setFiber={props.setFiber}
           addFiber={props.addFiber}
           subtractFiber={props.subtractFiber}
