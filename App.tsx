@@ -95,12 +95,7 @@ export default function App() {
           subtractFiber={subtractFiber}
         /> */}
 
-        <ScrollableFiber
-          fiber={fiber}
-          setFiber={setFiberNumber}
-          addFiber={addFiber}
-          subtractFiber={subtractFiber}
-        />
+        <ScrollableFiber />
       </KeyboardAvoidingView>
     </View>
   );
