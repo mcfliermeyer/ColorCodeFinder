@@ -17,10 +17,20 @@ const itemSize = (screenWidth - horizontalMargin * 2) / 5;
 // need to center svg and have width and height change with size of view
 
 interface Props {}
+type ViewToken = {
+  item: any;
+  // The key of this item
+  key: string;
+  index: number;
+  // indicated whether this item is viewable or not
+  isViewable: boolean;
+  section?: any;
+};
 
 const ScrollableFiber = (props: Props) => {
   const ref = React.useRef<FlatList>(null);
   const [fiber, setFiber] = React.useState(5);
+  const prevFirstViewableIndexRef = React.useRef<number>(fiber);
 
   const addFiber = () => {
     setFiber((oldFiber) => {
@@ -51,25 +61,21 @@ const ScrollableFiber = (props: Props) => {
   };
 
   const viewableItemsChanged = useCallback(({ viewableItems, changed }) => {
-    const firstItemChanged = changed[0];
-    const firstItemChangedFiberNumber: number = firstItemChanged.item.fiberNumber;
-    const lastItemChanged = changed[changed.length - 1];
-    const lastItemChangedFiberNumber: number = lastItemChanged.item.fiberNumber;
-    console.log("first item changed: ", firstItemChanged.item.fiberNumber);
-    console.log("last item changed: ", lastItemChanged.item.fiberNumber);
-    if (firstItemChangedFiberNumber > 1 && lastItemChangedFiberNumber < 20) {
-      if (firstItemChangedFiberNumber <= lastItemChangedFiberNumber) {
-        setFiber((prevFiber) => prevFiber - 1);
-      } else {
-        setFiber((prevFiber) => prevFiber + 1);
-      }
+    // [{"index": 4, "isViewable": true, "item": {"fiberColor": "#C0C2C9", "fiberNumber": 5}, "key": "#964B004"}
+    console.log(viewableItems);
+    if (viewableItems.length > 0) {
+      const firstViewableFiberNumber: number =
+        viewableItems[0].item.fiberNumber;
+
+      //might need to set timeout or some sort of debuff before changing fiber to prevent jitter scroll
+      setFiber((prev) => firstViewableFiberNumber);
     }
   }, []);
 
   const viewabilityConfig = {
+    minimumViewTime: 150,
     waitForInteraction: true,
-    // viewAreaCoveragePercentThreshold: 95,
-    itemVisiblePercentThreshold: 20,
+    itemVisiblePercentThreshold: 50,
   };
 
   return (
@@ -96,7 +102,7 @@ const ScrollableFiber = (props: Props) => {
         keyExtractor={(item, index) => fiberColorDictionary[index] + `${index}`}
         horizontal={true}
         snapToAlignment="start"
-        decelerationRate={"normal"}
+        decelerationRate={"fast"}
         snapToInterval={itemSize}
         getItemLayout={(data, index) => ({
           length: itemSize,
