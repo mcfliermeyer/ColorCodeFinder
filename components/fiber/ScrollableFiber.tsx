@@ -30,7 +30,7 @@ type ViewToken = {
 const ScrollableFiber = (props: Props) => {
   const ref = React.useRef<FlatList>(null);
   const [fiber, setFiber] = React.useState(5);
-  const prevFirstViewableIndexRef = React.useRef<number>(fiber);
+  const scrolledToIndex = React.useRef<number>(fiber);
 
   const addFiber = () => {
     setFiber((oldFiber) => {
@@ -60,22 +60,37 @@ const ScrollableFiber = (props: Props) => {
     return mapped;
   };
 
-  const viewableItemsChanged = useCallback(({ viewableItems, changed }) => {
-    // [{"index": 4, "isViewable": true, "item": {"fiberColor": "#C0C2C9", "fiberNumber": 5}, "key": "#964B004"}
-    console.log(viewableItems);
+  const viewableItemsChanged = useCallback(({ viewableItems }) => {
     if (viewableItems.length > 0) {
       const firstViewableFiberNumber: number =
         viewableItems[0].item.fiberNumber;
-
-      //might need to set timeout or some sort of debuff before changing fiber to prevent jitter scroll
-      setFiber((prev) => firstViewableFiberNumber);
+      scrolledToIndex.current = firstViewableFiberNumber;
     }
   }, []);
 
+  changed to below!!
+
+  // const viewableItemsChanged = useCallback((info: ViewToken) => {
+  //   console.log(info.viewableItems);
+  //   if (info.length > 0) {
+  //     const firstViewableFiberNumber: number =
+  //       info.viewableItems[0].item.fiberNumber;
+  //     scrolledToIndex.current = firstViewableFiberNumber;
+  //   }
+  // }, []);
+
+  const scrollEnded = () => {
+    // needs setTimeout because snapToInterval still needs to run, then scrolledToIndex needs
+    // to get updated and the scroll might still be scrolling
+    setTimeout(() => {
+      setFiber(scrolledToIndex.current);
+    }, 300);
+  };
+
   const viewabilityConfig = {
-    minimumViewTime: 150,
+    minimumViewTime: 0,
     waitForInteraction: true,
-    itemVisiblePercentThreshold: 50,
+    itemVisiblePercentThreshold: 10,
   };
 
   return (
@@ -85,6 +100,19 @@ const ScrollableFiber = (props: Props) => {
         style={styles.flatlist}
         data={createData()}
         initialScrollIndex={fiber - 1}
+        keyExtractor={(item, index) => fiberColorDictionary[index] + `${index}`}
+        horizontal={true}
+        snapToAlignment="start"
+        decelerationRate={"fast"}
+        snapToInterval={itemSize}
+        getItemLayout={(data, index) => ({
+          length: itemSize,
+          offset: itemSize * index,
+          index: index,
+        })}
+        onViewableItemsChanged={viewableItemsChanged}
+        viewabilityConfig={viewabilityConfig}
+        onScrollEndDrag={scrollEnded}
         renderItem={({ item }) => (
           <View style={styles.view}>
             <SVG>
@@ -99,18 +127,6 @@ const ScrollableFiber = (props: Props) => {
             </SVG>
           </View>
         )}
-        keyExtractor={(item, index) => fiberColorDictionary[index] + `${index}`}
-        horizontal={true}
-        snapToAlignment="start"
-        decelerationRate={"fast"}
-        snapToInterval={itemSize}
-        getItemLayout={(data, index) => ({
-          length: itemSize,
-          offset: itemSize * index,
-          index: index,
-        })}
-        onViewableItemsChanged={viewableItemsChanged}
-        viewabilityConfig={viewabilityConfig}
       />
       <View style={styles.fiberInputWrapper}>
         <FiberInput
