@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import SVG, { Path, Rect } from "react-native-svg";
+import SVG, { Rect } from "react-native-svg";
 import { FlatList, StyleSheet, View, Dimensions } from "react-native";
 import useFiberColor from "../../hooks/useFiberColor";
 import { fiberColorDictionary } from "../utilities/utilities";
@@ -14,23 +14,19 @@ const itemSize = (screenWidth - horizontalMargin * 2) / 5;
   /* need scrollable fiber to show 5 fibers at a time, pretty close together and different sizes 
           that change on scroll the closer to the center the taller */
 }
-// need to center svg and have width and height change with size of view
 
-interface Props {}
-type ViewToken = {
-  item: any;
-  // The key of this item
-  key: string;
-  index: number;
-  // indicated whether this item is viewable or not
-  isViewable: boolean;
-  section?: any;
-};
-
-const ScrollableFiber = (props: Props) => {
+const ScrollableFiber = () => {
   const ref = React.useRef<FlatList>(null);
   const [fiber, setFiber] = React.useState(5);
   const scrolledToIndex = React.useRef<number>(fiber);
+
+  React.useEffect(() => {
+    ref.current?.scrollToIndex({
+      animated: true,
+      index: fiber - 1,
+      viewPosition: 0.5,
+    });
+  }, [fiber]);
 
   const addFiber = () => {
     setFiber((oldFiber) => {
@@ -48,10 +44,6 @@ const ScrollableFiber = (props: Props) => {
     setFiber(() => newFiber);
   };
 
-  React.useEffect(() => {
-    ref.current?.scrollToIndex({ animated: true, index: fiber - 1 });
-  }, [fiber]);
-
   const createData = () => {
     const myArray = Array.from({ length: 24 }, (e, i) => i + 1);
     const mapped = myArray.map((e, i) => {
@@ -61,23 +53,13 @@ const ScrollableFiber = (props: Props) => {
   };
 
   const viewableItemsChanged = useCallback(({ viewableItems }) => {
+    const firstViewableFiberNumber: number = viewableItems[0].item.fiberNumber;
     if (viewableItems.length > 0) {
-      const firstViewableFiberNumber: number =
-        viewableItems[0].item.fiberNumber;
       scrolledToIndex.current = firstViewableFiberNumber;
     }
+    if (viewableItems.length === 5) {
+    }
   }, []);
-
-  changed to below!!
-
-  // const viewableItemsChanged = useCallback((info: ViewToken) => {
-  //   console.log(info.viewableItems);
-  //   if (info.length > 0) {
-  //     const firstViewableFiberNumber: number =
-  //       info.viewableItems[0].item.fiberNumber;
-  //     scrolledToIndex.current = firstViewableFiberNumber;
-  //   }
-  // }, []);
 
   const scrollEnded = () => {
     // needs setTimeout because snapToInterval still needs to run, then scrolledToIndex needs
@@ -91,6 +73,21 @@ const ScrollableFiber = (props: Props) => {
     minimumViewTime: 0,
     waitForInteraction: true,
     itemVisiblePercentThreshold: 10,
+  };
+
+  const isInView = (fiberNum: number) => {
+    if (fiberNum < fiber - 2 || fiberNum > fiber + 2) {
+      return false;
+    }
+    return true;
+  };
+  const fiberHeight = (fiberNum: number) => {
+    if (fiberNum === fiber - 2) return 10;
+    if (fiberNum === fiber - 1) return 20;
+    if (fiberNum === fiber) return 50;
+    if (fiberNum === fiber + 1) return 20;
+    if (fiberNum === fiber + 2) return 10;
+    return 0;
   };
 
   return (
@@ -113,16 +110,15 @@ const ScrollableFiber = (props: Props) => {
         onViewableItemsChanged={viewableItemsChanged}
         viewabilityConfig={viewabilityConfig}
         onScrollEndDrag={scrollEnded}
-        renderItem={({ item }) => (
+        renderItem={({ item, index }) => (
           <View style={styles.view}>
             <SVG>
               <Rect
                 x="10"
                 y="17"
-                width="9"
-                height="59"
+                width="12"
+                height={isInView(item.fiberNumber) ? fiberHeight(item.fiberNumber) : 0}
                 fill={item.fiberColor}
-                strokeWidth={0.3}
               />
             </SVG>
           </View>
