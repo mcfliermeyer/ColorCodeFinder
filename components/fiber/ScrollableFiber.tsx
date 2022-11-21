@@ -75,12 +75,14 @@ const ScrollableFiber = () => {
     itemVisiblePercentThreshold: 10,
   };
 
+  //helper for height of svg to see if its in view of flatlist
   const isInView = (fiberNum: number) => {
     if (fiberNum < fiber - 2 || fiberNum > fiber + 2) {
       return false;
     }
     return true;
   };
+  //flatlist height of svgs in view
   const fiberHeight = (fiberNum: number) => {
     if (fiberNum === fiber - 2) return 10;
     if (fiberNum === fiber - 1) return 20;
@@ -117,7 +119,9 @@ const ScrollableFiber = () => {
                 x="10"
                 y="17"
                 width="12"
-                height={isInView(item.fiberNumber) ? fiberHeight(item.fiberNumber) : 0}
+                height={
+                  isInView(item.fiberNumber) ? fiberHeight(item.fiberNumber) : 0
+                }
                 fill={item.fiberColor}
               />
             </SVG>
