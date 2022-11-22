@@ -11,7 +11,7 @@ const horizontalMargin = 50;
 const fiberMargin = 4;
 const itemSize = (screenWidth - horizontalMargin * 2) / 5;
 
-// need to add 2 fibers to begininng and change so when selecting fiber 1 the blue goes to center
+
 
 const ScrollableFiber = () => {
   const ref = React.useRef<FlatList>(null);
@@ -80,12 +80,12 @@ const ScrollableFiber = () => {
   };
   //flatlist height of svgs in view
   const fiberHeight = (fiberNum: number) => {
-    if (fiberNum <= 0) return 0;//adding first 2 spots to be empty 
-    if (fiberNum === fiber - 2) return 10;
-    if (fiberNum === fiber - 1) return 20;
-    if (fiberNum === fiber) return 50;
-    if (fiberNum === fiber + 1) return 20;
-    if (fiberNum === fiber + 2) return 10;
+    if (fiberNum <= 0) return 0; //adding first 2 spots to be empty
+    if (fiberNum === fiber - 2) return 20;
+    if (fiberNum === fiber - 1) return 50;
+    if (fiberNum === fiber) return 100;
+    if (fiberNum === fiber + 1) return 50;
+    if (fiberNum === fiber + 2) return 20;
     return 0;
   };
 
@@ -111,18 +111,18 @@ const ScrollableFiber = () => {
         onScrollEndDrag={scrollEnded}
         renderItem={({ item, index }) => (
           <View style={styles.view}>
-            {/* <SVG>
-              <Rect
-                x="10"
-                y="17"
-                width="12"
-                height={
-                  isInView(item.fiberNumber) ? fiberHeight(item.fiberNumber) : 0
-                }
-                fill={item.fiberColor}
-              />
-            </SVG> */}
-            <MotiView style={styles.animatedView} />
+            <MotiView
+              style={styles.animatedView}
+              from={{ height: 50 }}
+              animate={{
+                height: isInView(item.fiberNumber) ? fiberHeight(item.fiberNumber) : 0,
+                backgroundColor: item.fiberColor
+              }}
+              transition={{
+                type: "timing",
+                duration: 500,
+              }}
+            />
           </View>
         )}
       />
@@ -148,23 +148,19 @@ const styles = StyleSheet.create({
     flexGrow: 0,
     height: 150,
     width: screenWidth - horizontalMargin * 2,
-    backgroundColor: "orange",
+    backgroundColor: "#424549",
   },
   view: {
-    backgroundColor: "#C0C2C9",
     width: itemSize - fiberMargin * 2,
     height: 150,
     marginHorizontal: fiberMargin,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: "flex-end",
   },
   fiberInputWrapper: {
     margin: 15,
   },
   animatedView: {
-    width: 20,
-    height: 50,
     margin: 15,
-    backgroundColor: "red",
+    width: 20,
   },
 });
