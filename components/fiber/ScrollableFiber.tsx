@@ -1,6 +1,7 @@
 import React, { useCallback } from "react";
 import SVG, { Rect } from "react-native-svg";
 import { FlatList, StyleSheet, View, Dimensions } from "react-native";
+import { MotiView } from "moti";
 import useFiberColor from "../../hooks/useFiberColor";
 import { fiberColorDictionary } from "../utilities/utilities";
 import FiberInput from "./FiberInput";
@@ -110,7 +111,7 @@ const ScrollableFiber = () => {
         onScrollEndDrag={scrollEnded}
         renderItem={({ item, index }) => (
           <View style={styles.view}>
-            <SVG>
+            {/* <SVG>
               <Rect
                 x="10"
                 y="17"
@@ -120,7 +121,8 @@ const ScrollableFiber = () => {
                 }
                 fill={item.fiberColor}
               />
-            </SVG>
+            </SVG> */}
+            <MotiView style={styles.animatedView} />
           </View>
         )}
       />
@@ -153,8 +155,16 @@ const styles = StyleSheet.create({
     width: itemSize - fiberMargin * 2,
     height: 150,
     marginHorizontal: fiberMargin,
+    justifyContent: "center",
+    alignItems: "center",
   },
   fiberInputWrapper: {
     margin: 15,
+  },
+  animatedView: {
+    width: 20,
+    height: 50,
+    margin: 15,
+    backgroundColor: "red",
   },
 });
