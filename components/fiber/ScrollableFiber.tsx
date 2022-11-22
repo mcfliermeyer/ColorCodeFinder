@@ -10,20 +10,17 @@ const horizontalMargin = 50;
 const fiberMargin = 4;
 const itemSize = (screenWidth - horizontalMargin * 2) / 5;
 
-{
-  /* need scrollable fiber to show 5 fibers at a time, pretty close together and different sizes 
-          that change on scroll the closer to the center the taller */
-}
+// need to add 2 fibers to begininng and change so when selecting fiber 1 the blue goes to center
 
 const ScrollableFiber = () => {
   const ref = React.useRef<FlatList>(null);
-  const [fiber, setFiber] = React.useState(5);
+  const [fiber, setFiber] = React.useState(3);
   const scrolledToIndex = React.useRef<number>(fiber);
 
   React.useEffect(() => {
     ref.current?.scrollToIndex({
       animated: true,
-      index: fiber - 1,
+      index: fiber + 1,
       viewPosition: 0.5,
     });
   }, [fiber]);
@@ -47,7 +44,7 @@ const ScrollableFiber = () => {
   const createData = () => {
     const myArray = Array.from({ length: 24 }, (e, i) => i + 1);
     const mapped = myArray.map((e, i) => {
-      return { fiberColor: useFiberColor(e), fiberNumber: e };
+      return { fiberColor: useFiberColor(e - 2), fiberNumber: e - 2 };
     });
     return mapped;
   };
@@ -56,8 +53,6 @@ const ScrollableFiber = () => {
     const firstViewableFiberNumber: number = viewableItems[0].item.fiberNumber;
     if (viewableItems.length > 0) {
       scrolledToIndex.current = firstViewableFiberNumber;
-    }
-    if (viewableItems.length === 5) {
     }
   }, []);
 
@@ -84,6 +79,7 @@ const ScrollableFiber = () => {
   };
   //flatlist height of svgs in view
   const fiberHeight = (fiberNum: number) => {
+    if (fiberNum <= 0) return 0;//adding first 2 spots to be empty 
     if (fiberNum === fiber - 2) return 10;
     if (fiberNum === fiber - 1) return 20;
     if (fiberNum === fiber) return 50;
