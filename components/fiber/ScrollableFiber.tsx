@@ -1,10 +1,17 @@
 import React, { useCallback } from "react";
 import SVG, { Rect } from "react-native-svg";
-import { FlatList, StyleSheet, View, Dimensions } from "react-native";
+import {
+  FlatList,
+  StyleSheet,
+  View,
+  Dimensions,
+  ViewToken,
+} from "react-native";
 import { MotiView } from "moti";
 import useFiberColor from "../../hooks/useFiberColor";
 import { fiberColorDictionary } from "../utilities/utilities";
 import FiberInput from "./FiberInput";
+import Redlight from "./Redlight";
 
 const screenWidth = Dimensions.get("screen").width;
 const horizontalMargin = 50;
@@ -21,7 +28,6 @@ const ScrollableFiber = () => {
   const scrolledToIndex = React.useRef<number>(fiber);
 
   React.useEffect(() => {
-    console.log("is this scrolling");
     ref.current?.scrollToIndex({
       animated: true,
       viewPosition: 0.5,
@@ -46,26 +52,36 @@ const ScrollableFiber = () => {
   };
 
   const createData = () => {
-    const myArray = Array.from({ length: 24 }, (e, i) => i + 1);
+    const myArray = Array.from({ length: 50 }, (e, i) => i + 1);
     const mapped = myArray.map((e, i) => {
       return { fiberColor: useFiberColor(e - 4), fiberNumber: e - 4 };
     });
     return mapped;
   };
 
-  const viewableItemsChanged = useCallback(({ viewableItems }) => {
-    const firstViewableFiberNumber: number = viewableItems[0].item.fiberNumber;
-    if (viewableItems.length > 0) {
-      scrolledToIndex.current = firstViewableFiberNumber + 4; //plus 2 so it doesnt backtrack by 2 to center list
-    }
-  }, []);
+  const viewableItemsChanged = useCallback(
+    ({
+      viewableItems,
+      changed,
+    }: {
+      viewableItems: ViewToken[];
+      changed: ViewToken[];
+    }) => {
+      const firstViewableFiberNumber: number =
+        viewableItems[0]?.item.fiberNumber;
+      if (viewableItems.length > 0) {
+        scrolledToIndex.current = firstViewableFiberNumber + 4; //plus 2 so it doesnt backtrack by 2 to center list
+      }
+    },
+    []
+  );
 
   const scrollEnded = () => {
     // needs setTimeout because snapToInterval still needs to run, then scrolledToIndex needs
     // to get updated and the scroll might still be scrolling
     setTimeout(() => {
       setFiber(scrolledToIndex.current);
-    }, 300);
+    }, 280);
   };
 
   const viewabilityConfig = {
@@ -74,26 +90,22 @@ const ScrollableFiber = () => {
     itemVisiblePercentThreshold: 10,
   };
 
-  //helper for height of svg to see if its in view of flatlist
-  const isInView = (fiberNum: number) => {
-    if (fiberNum < fiber - 4 || fiberNum > fiber + 4) {
-      return false;
-    }
-    return true;
-  };
-
   const fiberViewDimensions = (fiberNum: number, fiberColor: string) => {
+    const difference =
+      fiberNum - fiber >= 0 ? fiberNum - fiber : fiber - fiberNum;
     if (fiberNum <= 0) return { height: 0, backgroundColor: fiberColor };
-    else if (fiberNum - fiber === 2 || fiber - fiberNum === 2)
+    else if (difference === 3)
+      return { height: 10, backgroundColor: fiberColor };
+    else if (difference === 2)
       return { height: 20, backgroundColor: fiberColor };
-    else if (fiberNum - fiber === 1 || fiber - fiberNum === 1)
+    else if (difference === 1)
       return { height: 50, backgroundColor: fiberColor };
     else if (fiberNum === fiber)
       return {
         height: 110,
         backgroundColor: fiberColor,
       };
-    else return { height: 10, backgroundColor: fiberColor };
+    else return { height: 0, backgroundColor: fiberColor };
   };
 
   return (
@@ -117,6 +129,7 @@ const ScrollableFiber = () => {
         onScrollEndDrag={scrollEnded}
         renderItem={({ item, index }) => (
           <View style={styles.view}>
+            {fiber === item.fiberNumber && <Redlight />}
             <MotiView
               style={styles.animatedView}
               from={{ height: 10 }}

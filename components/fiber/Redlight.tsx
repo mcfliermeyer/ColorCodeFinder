@@ -15,8 +15,8 @@ const Redlight = (props: Props) => {
       <SVG>
         <Path
           stroke={`hsl(0, 100%, 50%, .7)`}
-          strokeWidth={1.9}
-          d={`M${props.width ? props.width/2 - 1.5 : 50} 0 l0 12 0 12`}
+          strokeWidth={5}
+          d={`M0 0 l0 50 0 50`}
         />
       </SVG>
     </Animated.View>
@@ -25,7 +25,8 @@ const Redlight = (props: Props) => {
 
 const styles = StyleSheet.create({
   view: {
-    height: 12,
+    height: 50,
+    width: 5,
   },
 });
 
