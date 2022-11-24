@@ -8,23 +8,24 @@ import FiberInput from "./FiberInput";
 
 const screenWidth = Dimensions.get("screen").width;
 const horizontalMargin = 50;
-const itemSize = (screenWidth - horizontalMargin * 2) / 5;
-const fiberMargin = itemSize / 10;
-const fiberWidth = itemSize / 2;
+const itemSize = (screenWidth - horizontalMargin * 2) / 6;
+const fiberPadding = itemSize / 2;
+const fiberWidth = itemSize;
 
 // need to resize margins and make sure any changes with const above will keep
 // flatlist items cenetered.
 
 const ScrollableFiber = () => {
   const ref = React.useRef<FlatList>(null);
-  const [fiber, setFiber] = React.useState(3);
+  const [fiber, setFiber] = React.useState(1);
   const scrolledToIndex = React.useRef<number>(fiber);
 
   React.useEffect(() => {
+    console.log("is this scrolling");
     ref.current?.scrollToIndex({
       animated: true,
-      index: fiber + 1,
       viewPosition: 0.5,
+      index: fiber + 3,
     });
   }, [fiber]);
 
@@ -47,7 +48,7 @@ const ScrollableFiber = () => {
   const createData = () => {
     const myArray = Array.from({ length: 24 }, (e, i) => i + 1);
     const mapped = myArray.map((e, i) => {
-      return { fiberColor: useFiberColor(e - 2), fiberNumber: e - 2 };
+      return { fiberColor: useFiberColor(e - 4), fiberNumber: e - 4 };
     });
     return mapped;
   };
@@ -55,7 +56,7 @@ const ScrollableFiber = () => {
   const viewableItemsChanged = useCallback(({ viewableItems }) => {
     const firstViewableFiberNumber: number = viewableItems[0].item.fiberNumber;
     if (viewableItems.length > 0) {
-      scrolledToIndex.current = firstViewableFiberNumber + 2;//plus 2 so it doesnt backtrack by 2 to center list
+      scrolledToIndex.current = firstViewableFiberNumber + 4; //plus 2 so it doesnt backtrack by 2 to center list
     }
   }, []);
 
@@ -70,12 +71,12 @@ const ScrollableFiber = () => {
   const viewabilityConfig = {
     minimumViewTime: 0,
     waitForInteraction: true,
-    itemVisiblePercentThreshold: 5,
+    itemVisiblePercentThreshold: 10,
   };
 
   //helper for height of svg to see if its in view of flatlist
   const isInView = (fiberNum: number) => {
-    if (fiberNum < fiber - 2 || fiberNum > fiber + 2) {
+    if (fiberNum < fiber - 4 || fiberNum > fiber + 4) {
       return false;
     }
     return true;
@@ -88,7 +89,10 @@ const ScrollableFiber = () => {
     else if (fiberNum - fiber === 1 || fiber - fiberNum === 1)
       return { height: 50, backgroundColor: fiberColor };
     else if (fiberNum === fiber)
-      return { height: 100,width: fiberWidth, backgroundColor: fiberColor };
+      return {
+        height: 110,
+        backgroundColor: fiberColor,
+      };
     else return { height: 10, backgroundColor: fiberColor };
   };
 
@@ -98,7 +102,6 @@ const ScrollableFiber = () => {
         ref={ref}
         style={styles.flatlist}
         data={createData()}
-        initialScrollIndex={fiber - 1}
         keyExtractor={(item, index) => fiberColorDictionary[index] + `${index}`}
         horizontal={true}
         snapToAlignment="start"
@@ -106,7 +109,7 @@ const ScrollableFiber = () => {
         snapToInterval={itemSize}
         getItemLayout={(data, index) => ({
           length: itemSize,
-          offset: itemSize * index,
+          offset: itemSize * index - index * 10,
           index: index,
         })}
         onViewableItemsChanged={viewableItemsChanged}
@@ -120,7 +123,7 @@ const ScrollableFiber = () => {
               animate={fiberViewDimensions(item.fiberNumber, item.fiberColor)}
               transition={{
                 type: "timing",
-                duration: 350,
+                duration: 250,
               }}
             />
           </View>
@@ -147,20 +150,23 @@ const styles = StyleSheet.create({
   flatlist: {
     flexGrow: 0,
     height: 150,
-    width: screenWidth - horizontalMargin * 2,
+    width: screenWidth - 30,
     backgroundColor: "#424549",
+  },
+  fiberInputWrapper: {
+    margin: 15,
   },
   view: {
     width: itemSize,
     height: 150,
     justifyContent: "flex-end",
     alignItems: "center",
-  },
-  fiberInputWrapper: {
-    margin: 15,
+    marginRight: -10,
   },
   animatedView: {
-    width: fiberWidth,
+    width: itemSize,
     height: 10,
+    borderTopStartRadius: 3,
+    borderTopEndRadius: 3,
   },
 });
