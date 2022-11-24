@@ -8,10 +8,12 @@ import FiberInput from "./FiberInput";
 
 const screenWidth = Dimensions.get("screen").width;
 const horizontalMargin = 50;
-const fiberMargin = 4;
 const itemSize = (screenWidth - horizontalMargin * 2) / 5;
+const fiberMargin = itemSize / 10;
+const fiberWidth = itemSize / 2;
 
-
+// need to resize margins and make sure any changes with const above will keep
+// flatlist items cenetered.
 
 const ScrollableFiber = () => {
   const ref = React.useRef<FlatList>(null);
@@ -53,7 +55,7 @@ const ScrollableFiber = () => {
   const viewableItemsChanged = useCallback(({ viewableItems }) => {
     const firstViewableFiberNumber: number = viewableItems[0].item.fiberNumber;
     if (viewableItems.length > 0) {
-      scrolledToIndex.current = firstViewableFiberNumber;
+      scrolledToIndex.current = firstViewableFiberNumber + 2;//plus 2 so it doesnt backtrack by 2 to center list
     }
   }, []);
 
@@ -68,7 +70,7 @@ const ScrollableFiber = () => {
   const viewabilityConfig = {
     minimumViewTime: 0,
     waitForInteraction: true,
-    itemVisiblePercentThreshold: 10,
+    itemVisiblePercentThreshold: 5,
   };
 
   //helper for height of svg to see if its in view of flatlist
@@ -78,15 +80,16 @@ const ScrollableFiber = () => {
     }
     return true;
   };
-  //flatlist height of svgs in view
-  const fiberHeight = (fiberNum: number) => {
-    if (fiberNum <= 0) return 0; //adding first 2 spots to be empty
-    if (fiberNum === fiber - 2) return 20;
-    if (fiberNum === fiber - 1) return 50;
-    if (fiberNum === fiber) return 100;
-    if (fiberNum === fiber + 1) return 50;
-    if (fiberNum === fiber + 2) return 20;
-    return 0;
+
+  const fiberViewDimensions = (fiberNum: number, fiberColor: string) => {
+    if (fiberNum <= 0) return { height: 0, backgroundColor: fiberColor };
+    else if (fiberNum - fiber === 2 || fiber - fiberNum === 2)
+      return { height: 20, backgroundColor: fiberColor };
+    else if (fiberNum - fiber === 1 || fiber - fiberNum === 1)
+      return { height: 50, backgroundColor: fiberColor };
+    else if (fiberNum === fiber)
+      return { height: 100,width: fiberWidth, backgroundColor: fiberColor };
+    else return { height: 10, backgroundColor: fiberColor };
   };
 
   return (
@@ -113,14 +116,11 @@ const ScrollableFiber = () => {
           <View style={styles.view}>
             <MotiView
               style={styles.animatedView}
-              from={{ height: 50 }}
-              animate={{
-                height: isInView(item.fiberNumber) ? fiberHeight(item.fiberNumber) : 0,
-                backgroundColor: item.fiberColor
-              }}
+              from={{ height: 10 }}
+              animate={fiberViewDimensions(item.fiberNumber, item.fiberColor)}
               transition={{
                 type: "timing",
-                duration: 500,
+                duration: 350,
               }}
             />
           </View>
@@ -151,16 +151,16 @@ const styles = StyleSheet.create({
     backgroundColor: "#424549",
   },
   view: {
-    width: itemSize - fiberMargin * 2,
+    width: itemSize,
     height: 150,
-    marginHorizontal: fiberMargin,
     justifyContent: "flex-end",
+    alignItems: "center",
   },
   fiberInputWrapper: {
     margin: 15,
   },
   animatedView: {
-    margin: 15,
-    width: 20,
+    width: fiberWidth,
+    height: 10,
   },
 });
