@@ -1,5 +1,4 @@
 import React, { useCallback } from "react";
-import SVG, { Rect } from "react-native-svg";
 import {
   FlatList,
   StyleSheet,
@@ -12,6 +11,7 @@ import useFiberColor from "../../hooks/useFiberColor";
 import { fiberColorDictionary } from "../utilities/utilities";
 import FiberInput from "./FiberInput";
 import Redlight from "./Redlight";
+import ScrollableFiberCable from "./ScrollableFiberCable";
 
 const screenWidth = Dimensions.get("screen").width;
 const horizontalMargin = 50;
@@ -126,6 +126,7 @@ const ScrollableFiber = () => {
         })}
         onViewableItemsChanged={viewableItemsChanged}
         viewabilityConfig={viewabilityConfig}
+        showsHorizontalScrollIndicator={false}
         onScrollEndDrag={scrollEnded}
         renderItem={({ item, index }) => (
           <View style={styles.view}>
@@ -142,6 +143,7 @@ const ScrollableFiber = () => {
           </View>
         )}
       />
+      <ScrollableFiberCable fiber={fiber} />
       <View style={styles.fiberInputWrapper}>
         <FiberInput
           fiber={fiber}
@@ -159,6 +161,7 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
     alignItems: "center",
+    alignContent: "center",
   },
   flatlist: {
     flexGrow: 0,
