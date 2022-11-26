@@ -21,19 +21,20 @@ interface Props {
 
 const ScrollableFiberCable = (props: Props) => {
   const ref = React.useRef<FlatList>(null);
-  const [fiber, setFiber] = React.useState(2);
+  const [fiber, setFiber] = React.useState(1);
   const scrolledToIndex = React.useRef<number>(fiber);
 
   React.useEffect(() => {
     const remainder = (props.fiber - 1) % 12;
-    const base = (props.fiber - 1) - remainder;
-    const tubeNumber = base / 12 + 1;
-    console.log(tubeNumber)
+    const base = props.fiber - 1 - remainder;
+    const tubeNumber = base / 12;
+    const offset = (tubeNumber) > 0 ? (tubeNumber) * 80 + 120 : 120 //all because the first seperator isnt calculated
+
     ref.current?.scrollToIndex({
       animated: true,
-      index: tubeNumber,
+      index: tubeNumber + 2,
       viewPosition: 0.5,
-      viewOffset: itemSize - 40 * (tubeNumber - 1),
+      viewOffset: itemSize - offset,
     });
   }, [props.fiber]);
 
@@ -54,7 +55,7 @@ const ScrollableFiberCable = (props: Props) => {
   // };
 
   const createData = () => {
-    const myArray = Array.from({ length: 12 }, (e, i) => i + 1);
+    const myArray = Array.from({ length: 13 }, (e, i) => i + 1);
     const mapped = myArray.map((e, i) => {
       return { fiberColor: useFiberColor(e), fiberNumber: e };
     });
@@ -81,7 +82,7 @@ const ScrollableFiberCable = (props: Props) => {
               justifyContent: "center",
               alignItems: "center",
               borderRadius: 5,
-              backgroundColor: useFiberColor(index + 1),
+              backgroundColor: index === 0 ? "#424549" : useFiberColor(index),
             }}
           ></View>
         )}
@@ -89,7 +90,7 @@ const ScrollableFiberCable = (props: Props) => {
         viewabilityConfig={viewabilityConfig}
         getItemLayout={(data, index) => ({
           length: itemSize,
-          offset: itemSize * index,
+          offset: itemSize * index - index * 40,
           index: index,
         })}
         snapToInterval={itemSize + 40}
