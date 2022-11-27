@@ -23,16 +23,16 @@ const ScrollableFiberCable = (props: Props) => {
   const ref = React.useRef<FlatList>(null);
   const [fiber, setFiber] = React.useState(1);
   const scrolledToIndex = React.useRef<number>(fiber);
+  const remainder = (props.fiber - 1) % 12;
+  const base = props.fiber - 1 - remainder;
+  const tubeNumber = base / 12;
+  const offset = (seperatorWidth) * (tubeNumber) + 25
 
   React.useEffect(() => {
-    const remainder = (props.fiber - 1) % 12;
-    const base = props.fiber - 1 - remainder;
-    const tubeNumber = base / 12;
-    const offset = (tubeNumber) > 0 ? (tubeNumber) * 80 + 120 : 120 //all because the first seperator isnt calculated
-
+    console.log("offset: ", offset);
     ref.current?.scrollToIndex({
       animated: true,
-      index: tubeNumber + 2,
+      index: tubeNumber + 1,
       viewPosition: 0.5,
       viewOffset: itemSize - offset,
     });
@@ -82,7 +82,8 @@ const ScrollableFiberCable = (props: Props) => {
               justifyContent: "center",
               alignItems: "center",
               borderRadius: 5,
-              backgroundColor: index === 0 ? "#424549" : useFiberColor(index),
+              backgroundColor: useFiberColor(index + 1),
+              marginLeft: index === 0 ? 25 : 0,
             }}
           ></View>
         )}
@@ -90,16 +91,18 @@ const ScrollableFiberCable = (props: Props) => {
         viewabilityConfig={viewabilityConfig}
         getItemLayout={(data, index) => ({
           length: itemSize,
-          offset: itemSize * index - index * 40,
+          offset: itemSize * index,
           index: index,
         })}
-        snapToInterval={itemSize + 40}
-        decelerationRate={"normal"}
+        snapToInterval={itemSize + seperatorWidth}
+        decelerationRate={0.88}
         showsHorizontalScrollIndicator={false}
       />
     </View>
   );
 };
+
+const seperatorWidth = 40;
 
 const styles = StyleSheet.create({
   container: {
@@ -107,6 +110,7 @@ const styles = StyleSheet.create({
     marginTop: 1,
     justifyContent: "center",
     alignItems: "center",
+    alignContent: "center",
     backgroundColor: "#424549",
   },
   view: {
@@ -114,10 +118,12 @@ const styles = StyleSheet.create({
     height: 300,
     justifyContent: "center",
     alignItems: "center",
+    alignContent: "center",
     borderRadius: 5,
+    marginHorizontal: seperatorWidth,
   },
   seperator: {
-    width: 40,
+    width: seperatorWidth,
     height: 300,
   },
 });
