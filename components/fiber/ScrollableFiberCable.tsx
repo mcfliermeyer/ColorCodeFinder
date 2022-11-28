@@ -27,9 +27,8 @@ const ScrollableFiberCable = (props: Props) => {
   const base = props.fiber - 1 - remainder;
   const tubeNumber = base / 12;
   const offset = (seperatorWidth) * (tubeNumber) + 25
-
+// figure out how i did scroll to index to set fiber
   React.useEffect(() => {
-    console.log("offset: ", offset);
     ref.current?.scrollToIndex({
       animated: true,
       index: tubeNumber + 1,

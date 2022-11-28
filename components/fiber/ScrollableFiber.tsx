@@ -24,8 +24,9 @@ const fiberWidth = itemSize;
 
 const ScrollableFiber = () => {
   const ref = React.useRef<FlatList>(null);
-  const [fiber, setFiber] = React.useState(1);
+  const [fiber, setFiber] = React.useState(2);
   const scrolledToIndex = React.useRef<number>(fiber);
+  const isFirstRender = React.useRef(true);
 
   React.useEffect(() => {
     ref.current?.scrollToIndex({
@@ -33,6 +34,12 @@ const ScrollableFiber = () => {
       viewPosition: 0.5,
       index: fiber + 3,
     });
+    if (isFirstRender.current) {//hack to center both fiber and cable in flatlist.
+      isFirstRender.current = false
+      setTimeout(() => {
+        subtractFiber()
+      }, 25);
+    }
   }, [fiber]);
 
   const addFiber = () => {
