@@ -17,17 +17,18 @@ const itemSize = screenWidth - 80;
 
 interface Props {
   fiber: number;
+  setFiberCableNumber: (cableNum: number) => void;
 }
 
 const ScrollableFiberCable = (props: Props) => {
   const ref = React.useRef<FlatList>(null);
   const [fiber, setFiber] = React.useState(1);
-  const scrolledToIndex = React.useRef<number>(fiber);
+  const scrolledToIndex = React.useRef<number>(1);
   const remainder = (props.fiber - 1) % 12;
   const base = props.fiber - 1 - remainder;
   const tubeNumber = base / 12;
-  const offset = (seperatorWidth) * (tubeNumber) + 25
-// figure out how i did scroll to index to set fiber
+  const offset = seperatorWidth * tubeNumber + 25;
+  // figure out how i did scroll to index to set fiber
   React.useEffect(() => {
     ref.current?.scrollToIndex({
       animated: true,
@@ -37,22 +38,6 @@ const ScrollableFiberCable = (props: Props) => {
     });
   }, [props.fiber]);
 
-  // const addFiber = () => {
-  //   setFiber((oldFiber) => {
-  //     if (oldFiber >= 0) return oldFiber + 1;
-  //     return 1;
-  //   });
-  // };
-  // const subtractFiber = () => {
-  //   setFiber((oldFiber) => {
-  //     if (oldFiber > 1) return oldFiber - 1;
-  //     return 1;
-  //   });
-  // };
-  // const setFiberNumber = (newFiber: number) => {
-  //   setFiber(() => newFiber);
-  // };
-
   const createData = () => {
     const myArray = Array.from({ length: 13 }, (e, i) => i + 1);
     const mapped = myArray.map((e, i) => {
@@ -60,9 +45,33 @@ const ScrollableFiberCable = (props: Props) => {
     });
     return mapped;
   };
+  const viewableItemsChanged = useCallback(
+    ({
+      viewableItems,
+      changed,
+    }: {
+      viewableItems: ViewToken[];
+      changed: ViewToken[];
+    }) => {
+      const firstViewableFiberCableNumber: number =
+        viewableItems[0]?.item.fiberNumber;
+      scrolledToIndex.current = firstViewableFiberCableNumber; // might not need
+      if (viewableItems.length > 0) {
+        props.setFiberCableNumber(firstViewableFiberCableNumber);
+      }
+    },
+    []
+  );
+  const scrollEnded = () => {
+    // needs setTimeout because snapToInterval still needs to run, then scrolledToIndex needs
+    // to get updated and the scroll might still be scrolling
+    setTimeout(() => {
+      // setFiber(scrolledToIndex.current);
+    }, 280);
+  };
 
   const viewabilityConfig = {
-    minimumViewTime: 0,
+    minimumViewTime: 600,
     waitForInteraction: true,
     itemVisiblePercentThreshold: 10,
   };
@@ -87,6 +96,7 @@ const ScrollableFiberCable = (props: Props) => {
           ></View>
         )}
         ItemSeparatorComponent={() => <View style={styles.seperator} />}
+        onViewableItemsChanged={viewableItemsChanged}
         viewabilityConfig={viewabilityConfig}
         getItemLayout={(data, index) => ({
           length: itemSize,

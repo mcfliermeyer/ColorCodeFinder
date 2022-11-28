@@ -34,11 +34,12 @@ const ScrollableFiber = () => {
       viewPosition: 0.5,
       index: fiber + 3,
     });
-    if (isFirstRender.current) {//hack to center both fiber and cable in flatlist.
-      isFirstRender.current = false
+    if (isFirstRender.current) {
+      //hack to center both fiber and cable in flatlist.
+      isFirstRender.current = false;
       setTimeout(() => {
-        subtractFiber()
-      }, 25);
+        subtractFiber();
+      }, 50);
     }
   }, [fiber]);
 
@@ -55,6 +56,12 @@ const ScrollableFiber = () => {
     });
   };
   const setFiberNumber = (newFiber: number) => {
+    setFiber(() => newFiber);
+  };
+
+  // right here we need to check fibernum to add or subtract 12 from it per which cable we scrolled to
+  const setFiberCableNumber = (newFiber: number) => {
+    console.log("cable scrolled setting fiber: ", newFiber);
     setFiber(() => newFiber);
   };
 
@@ -150,7 +157,10 @@ const ScrollableFiber = () => {
           </View>
         )}
       />
-      <ScrollableFiberCable fiber={fiber} />
+      <ScrollableFiberCable
+        fiber={fiber}
+        setFiberCableNumber={setFiberCableNumber}
+      />
       <View style={styles.fiberInputWrapper}>
         <FiberInput
           fiber={fiber}
