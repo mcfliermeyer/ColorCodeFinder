@@ -5,6 +5,10 @@ import {
   View,
   Dimensions,
   ViewToken,
+  ListRenderItemInfo,
+  ListRenderItem,
+  TextBase,
+  Text,
 } from "react-native";
 import { MotiView } from "moti";
 import useFiberColor from "../../hooks/useFiberColor";
@@ -19,6 +23,11 @@ interface Props {
   fiber: number;
   setFiberCableNumber: (cableNum: number) => void;
 }
+type FiberItem = {
+  fiberColor: string;
+  fiberNumber: number;
+  index: number;
+};
 
 const ScrollableFiberCable = (props: Props) => {
   const ref = React.useRef<FlatList>(null);
@@ -39,9 +48,9 @@ const ScrollableFiberCable = (props: Props) => {
   }, [props.fiber]);
 
   const createData = () => {
-    const myArray = Array.from({ length: 13 }, (e, i) => i + 1);
+    const myArray = Array.from({ length: 20 }, (_, i) => i + 1);
     const mapped = myArray.map((e, i) => {
-      return { fiberColor: useFiberColor(e), fiberNumber: e };
+      return { fiberColor: useFiberColor(e), fiberNumber: e, index: i };
     });
     return mapped;
   };
@@ -55,25 +64,39 @@ const ScrollableFiberCable = (props: Props) => {
     }) => {
       const firstViewableFiberCableNumber: number =
         viewableItems[0]?.item.fiberNumber;
-      scrolledToIndex.current = firstViewableFiberCableNumber; // might not need
       if (viewableItems.length > 0) {
-        props.setFiberCableNumber(firstViewableFiberCableNumber);
+        scrolledToIndex.current = firstViewableFiberCableNumber;
       }
     },
     []
   );
-  const scrollEnded = () => {
-    // needs setTimeout because snapToInterval still needs to run, then scrolledToIndex needs
-    // to get updated and the scroll might still be scrolling
-    setTimeout(() => {
-      // setFiber(scrolledToIndex.current);
-    }, 280);
-  };
 
   const viewabilityConfig = {
-    minimumViewTime: 600,
+    minimumViewTime: 100,
     waitForInteraction: true,
-    itemVisiblePercentThreshold: 10,
+    itemVisiblePercentThreshold: 90,
+  };
+
+  const renderItem: ListRenderItem<FiberItem> = ({
+    item,
+  }: {
+    item: FiberItem;
+  }) => {
+    return (
+      <View
+        style={{
+          width: itemSize,
+          height: 300,
+          justifyContent: "center",
+          alignItems: "center",
+          borderRadius: 5,
+          backgroundColor: item.fiberColor,
+          marginLeft: item.index === 0 ? 25 : 0,
+        }}
+      >
+        <Text>{item.fiberNumber}</Text>
+      </View>
+    );
   };
 
   return (
@@ -82,19 +105,7 @@ const ScrollableFiberCable = (props: Props) => {
         ref={ref}
         horizontal
         data={createData()}
-        renderItem={({ item, index }) => (
-          <View
-            style={{
-              width: itemSize,
-              height: 300,
-              justifyContent: "center",
-              alignItems: "center",
-              borderRadius: 5,
-              backgroundColor: useFiberColor(index + 1),
-              marginLeft: index === 0 ? 25 : 0,
-            }}
-          ></View>
-        )}
+        renderItem={renderItem}
         ItemSeparatorComponent={() => <View style={styles.seperator} />}
         onViewableItemsChanged={viewableItemsChanged}
         viewabilityConfig={viewabilityConfig}
@@ -106,6 +117,7 @@ const ScrollableFiberCable = (props: Props) => {
         snapToInterval={itemSize + seperatorWidth}
         decelerationRate={0.88}
         showsHorizontalScrollIndicator={false}
+        maxToRenderPerBatch={3}
       />
     </View>
   );
@@ -115,7 +127,7 @@ const seperatorWidth = 40;
 
 const styles = StyleSheet.create({
   container: {
-    width: screenWidth - 30,
+    width: screenWidth * 0.93,
     marginTop: 1,
     justifyContent: "center",
     alignItems: "center",
