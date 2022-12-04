@@ -43,7 +43,7 @@ const ScrollableFiberCable = (props: Props) => {
       animated: true,
       index: tubeNumber + 1,
       viewPosition: 0.5,
-      viewOffset: itemSize - offset,
+      viewOffset: itemSize - offset + seperatorWidth * (tubeNumber + 2), 
     });
   }, [props.fiber]);
 
@@ -62,19 +62,23 @@ const ScrollableFiberCable = (props: Props) => {
       viewableItems: ViewToken[];
       changed: ViewToken[];
     }) => {
+      console.log("item changing detected");
+
       const firstViewableFiberCableNumber: number =
         viewableItems[0]?.item.fiberNumber;
       if (viewableItems.length > 0) {
         scrolledToIndex.current = firstViewableFiberCableNumber;
+        console.log("item changing detected", firstViewableFiberCableNumber);
+
       }
     },
     []
   );
 
   const viewabilityConfig = {
-    minimumViewTime: 100,
+    minimumViewTime: 150,
     waitForInteraction: true,
-    itemVisiblePercentThreshold: 90,
+    viewAreaCoveragePercentThreshold: 100,
   };
 
   const renderItem: ListRenderItem<FiberItem> = ({
@@ -111,7 +115,7 @@ const ScrollableFiberCable = (props: Props) => {
         viewabilityConfig={viewabilityConfig}
         getItemLayout={(data, index) => ({
           length: itemSize,
-          offset: itemSize * index,
+          offset: itemSize * index + (seperatorWidth * (index + 1)),
           index: index,
         })}
         snapToInterval={itemSize + seperatorWidth}
