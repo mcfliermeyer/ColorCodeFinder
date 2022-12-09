@@ -35,44 +35,27 @@ const ScrollableFiberCable = (props: Props) => {
   const ref = React.useRef<FlatList>(null);
   const scrolledToIndex = React.useRef<number>(1);
   const propsFiberRef = React.useRef<number>(props.fiber);
+  const tubeRef = React.useRef<number | null>(1);
   const fiberContext = React.useContext(FiberContext);
   const remainder = propsFiberRef.current % 12;
   const base = propsFiberRef.current - remainder;
   const tubeNumber = base / 12;
   const offset = seperatorWidth * tubeNumber + 25;
-  const tube = useTubeNumber(fiberContext)
+  const tube = useTubeNumber(fiberContext);
 
   React.useEffect(() => {
-    if (fiberContext) {
-      console.log("changing fiber: ", fiberContext.fiber);
-      console.log("tube: ", tube);
-      // fiberContext.setFiber(propsFiberRef.current)
-      if (fiberContext.fiber % 12 === 0 ) {//changes to new tube when forward but not backwards
-        console.log("fiber context is at 11 or 12?")
-        propsFiberRef.current = fiberContext.fiber;
+    if (tubeRef.current !== useTubeNumber(fiberContext)) {
+      tubeRef.current = useTubeNumber(fiberContext)
+      if (tubeRef.current) {
+        ref.current?.scrollToIndex({
+          animated: true,
+          index: tubeRef.current,
+          viewPosition: 0.5,
+          viewOffset: itemSize - offset + seperatorWidth * (tubeNumber + 2),
+        });
       }
     }
-    ref.current?.scrollToIndex({
-      animated: true,
-      index: tubeNumber + 1,
-      viewPosition: 0.5,
-      viewOffset: itemSize - offset + seperatorWidth * (tubeNumber + 2),
-    });
   }, [fiberContext]);
-
-  React.useEffect(() => {
-    console.log("changing tube: ", tubeNumber);
-    if (fiberContext) {
-      // fiberContext.setFiber(propsFiberRef.current)
-      // propsFiberRef.current = fiberContext.fiber;
-    }
-    ref.current?.scrollToIndex({
-      animated: true,
-      index: tubeNumber + 1,
-      viewPosition: 0.5,
-      viewOffset: itemSize - offset + seperatorWidth * (tubeNumber + 2),
-    });
-  }, [propsFiberRef.current]);
 
   const createData = () => {
     const myArray = Array.from({ length: 20 }, (_, i) => i + 1);
@@ -94,10 +77,12 @@ const ScrollableFiberCable = (props: Props) => {
       if (viewableItems.length > 0) {
         scrolledToIndex.current = firstViewableFiberCableNumber;
         const cableBase = (firstViewableFiberCableNumber - 1) * 12;
+        //will need to check if viewableitems is greater or less than prev, to subtract or add to current fiber
         const newFiber = cableBase + propsFiberRef.current;
         propsFiberRef.current = newFiber;
         if (fiberContext) {
           fiberContext.setFiber(propsFiberRef.current);
+          // tubeRef.current = useTubeNumber(fiberContext);
         }
 
         console.log("new fiber: ", newFiber);
@@ -141,9 +126,8 @@ const ScrollableFiberCable = (props: Props) => {
         renderItem={renderItem}
         ItemSeparatorComponent={() => <View style={styles.seperator} />}
         onViewableItemsChanged={viewableItemsChanged}
-        // viewabilityConfigCallbackPairs={useRef([{viewabilityConfig: viewabilityConfig, onViewableItemsChanged: viewableItemsChanged}]).current}
         viewabilityConfig={viewabilityConfig}
-        getItemLayout={(data, index) => ({
+        getItemLayout={(_, index) => ({
           length: itemSize,
           offset: itemSize * index + seperatorWidth * (index + 1),
           index: index,
