@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { Dispatch, SetStateAction, useCallback } from "react";
 import {
   FlatList,
   StyleSheet,
@@ -13,18 +13,22 @@ import FiberInput from "./FiberInput";
 import Redlight from "./Redlight";
 import ScrollableFiberCable from "./ScrollableFiberCable";
 
+export type FiberContextType = {
+  fiber: number;
+  setFiber: React.Dispatch<React.SetStateAction<number>>;
+};
+export const FiberContext = React.createContext<FiberContextType | null>(null);
+
 const screenWidth = Dimensions.get("screen").width;
 const horizontalMargin = 50;
 const itemSize = (screenWidth - horizontalMargin * 2) / 6;
-const fiberPadding = itemSize / 2;
-const fiberWidth = itemSize;
 
 // need to resize margins and make sure any changes with const above will keep
 // flatlist items cenetered.
 
 const ScrollableFiber = () => {
   const ref = React.useRef<FlatList>(null);
-  const [fiber, setFiber] = React.useState(2);
+  const [fiber, setFiber] = React.useState(1);
   const scrolledToIndex = React.useRef<number>(fiber);
   const isFirstRender = React.useRef(true);
 
@@ -55,14 +59,15 @@ const ScrollableFiber = () => {
       return 1;
     });
   };
-  const setFiberNumber = (newFiber: number) => {
-    setFiber(() => newFiber);
-  };
+  const setFiberNumber = React.useCallback((newFiber: number) => {
+    console.log("setting fiber number: ", newFiber);
+    setFiber(newFiber);
+  }, []);
 
   // right here we need to check fibernum to add or subtract 12 from it per which cable we scrolled to
-  const setFiberCableNumber = (newFiber: number) => {
-    console.log("cable scrolled setting fiber: ", newFiber);
-    setFiber(() => newFiber);
+  const setFiberCableNumber = (oldFiber: number) => {
+    console.log("local fiber: ", oldFiber);
+    setFiber(() => oldFiber);
   };
 
   const createData = () => {
@@ -123,53 +128,57 @@ const ScrollableFiber = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <FlatList
-        ref={ref}
-        style={styles.flatlist}
-        data={createData()}
-        keyExtractor={(item, index) => fiberColorDictionary[index] + `${index}`}
-        horizontal={true}
-        snapToAlignment="start"
-        decelerationRate={"fast"}
-        snapToInterval={itemSize}
-        getItemLayout={(data, index) => ({
-          length: itemSize,
-          offset: itemSize * index - index * 10,
-          index: index,
-        })}
-        onViewableItemsChanged={viewableItemsChanged}
-        viewabilityConfig={viewabilityConfig}
-        showsHorizontalScrollIndicator={false}
-        onScrollEndDrag={scrollEnded}
-        renderItem={({ item, index }) => (
-          <View style={styles.view}>
-            {fiber === item.fiberNumber && <Redlight />}
-            <MotiView
-              style={styles.animatedView}
-              from={{ height: 10 }}
-              animate={fiberViewDimensions(item.fiberNumber, item.fiberColor)}
-              transition={{
-                type: "timing",
-                duration: 250,
-              }}
-            />
-          </View>
-        )}
-      />
-      <ScrollableFiberCable
-        fiber={fiber}
-        setFiberCableNumber={setFiberCableNumber}
-      />
-      <View style={styles.fiberInputWrapper}>
-        <FiberInput
-          fiber={fiber}
-          setFiber={setFiber}
-          addFiber={addFiber}
-          subtractFiber={subtractFiber}
+    <FiberContext.Provider value={{ fiber, setFiber }}>
+      <View style={styles.container}>
+        <FlatList
+          ref={ref}
+          style={styles.flatlist}
+          data={createData()}
+          keyExtractor={(item, index) =>
+            fiberColorDictionary[index] + `${index}`
+          }
+          horizontal={true}
+          snapToAlignment="start"
+          decelerationRate={"fast"}
+          snapToInterval={itemSize}
+          getItemLayout={(data, index) => ({
+            length: itemSize,
+            offset: itemSize * index - index * 10,
+            index: index,
+          })}
+          onViewableItemsChanged={viewableItemsChanged}
+          viewabilityConfig={viewabilityConfig}
+          showsHorizontalScrollIndicator={false}
+          onScrollEndDrag={scrollEnded}
+          renderItem={({ item, index }) => (
+            <View style={styles.view}>
+              {fiber === item.fiberNumber && <Redlight />}
+              <MotiView
+                style={styles.animatedView}
+                from={{ height: 10 }}
+                animate={fiberViewDimensions(item.fiberNumber, item.fiberColor)}
+                transition={{
+                  type: "timing",
+                  duration: 250,
+                }}
+              />
+            </View>
+          )}
         />
+        <ScrollableFiberCable
+          fiber={fiber}
+          setFiberCableNumber={setFiberCableNumber}
+        />
+        <View style={styles.fiberInputWrapper}>
+          <FiberInput
+            fiber={fiber}
+            setFiber={setFiber}
+            addFiber={addFiber}
+            subtractFiber={subtractFiber}
+          />
+        </View>
       </View>
-    </View>
+    </FiberContext.Provider>
   );
 };
 export default ScrollableFiber;
