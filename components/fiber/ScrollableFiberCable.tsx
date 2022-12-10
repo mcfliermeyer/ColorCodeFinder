@@ -77,15 +77,17 @@ const ScrollableFiberCable = (props: Props) => {
       if (viewableItems.length > 0) {
         scrolledToIndex.current = firstViewableFiberCableNumber;
         const cableBase = (firstViewableFiberCableNumber - 1) * 12;
+        if (tubeRef.current && tubeRef.current < firstViewableFiberCableNumber) {
+          propsFiberRef.current = propsFiberRef.current + cableBase;
+        }
+        else {
+          propsFiberRef.current = propsFiberRef.current - cableBase;
+        }
         //will need to check if viewableitems is greater or less than prev, to subtract or add to current fiber
-        const newFiber = cableBase + propsFiberRef.current;
-        propsFiberRef.current = newFiber;
         if (fiberContext) {
           fiberContext.setFiber(propsFiberRef.current);
           // tubeRef.current = useTubeNumber(fiberContext);
         }
-
-        console.log("new fiber: ", newFiber);
       }
     },
     []
