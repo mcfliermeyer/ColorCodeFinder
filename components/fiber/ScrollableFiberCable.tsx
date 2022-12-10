@@ -45,7 +45,7 @@ const ScrollableFiberCable = (props: Props) => {
 
   React.useEffect(() => {
     if (tubeRef.current !== useTubeNumber(fiberContext)) {
-      tubeRef.current = useTubeNumber(fiberContext)
+      tubeRef.current = useTubeNumber(fiberContext);
       if (tubeRef.current) {
         ref.current?.scrollToIndex({
           animated: true,
@@ -77,10 +77,19 @@ const ScrollableFiberCable = (props: Props) => {
       if (viewableItems.length > 0) {
         scrolledToIndex.current = firstViewableFiberCableNumber;
         const cableBase = (firstViewableFiberCableNumber - 1) * 12;
-        if (tubeRef.current && tubeRef.current < firstViewableFiberCableNumber) {
+        //check difference in tubeRef and multiply by 12 and add or subtract depending on left or right swipe
+        if (
+          tubeRef.current &&
+          tubeRef.current < firstViewableFiberCableNumber
+        ) {
           propsFiberRef.current = propsFiberRef.current + cableBase;
-        }
-        else {
+          console.log("we swiped to higher cable");
+        } else {
+          console.log(
+            "we swiped to lower cable ",
+            cableBase
+          )
+
           propsFiberRef.current = propsFiberRef.current - cableBase;
         }
         //will need to check if viewableitems is greater or less than prev, to subtract or add to current fiber
