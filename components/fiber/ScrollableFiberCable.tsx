@@ -13,7 +13,7 @@ import {
 import { MotiView } from "moti";
 import useFiberColor from "../../hooks/useFiberColor";
 import useTubeNumber from "../../hooks/useTubeNumber";
-import { fiberColorDictionary } from "../utilities/utilities";
+import { fiberBase, fiberColorDictionary } from "../utilities/utilities";
 import FiberInput from "./FiberInput";
 import Redlight from "./Redlight";
 import { FiberContext } from "./ScrollableFiber";
@@ -24,6 +24,7 @@ const itemSize = screenWidth - 80;
 interface Props {
   fiber: number;
   setFiberCableNumber: (fiberNum: number) => void;
+  tubeChanged: (tubeDifference: number) => void;
 }
 type FiberItem = {
   fiberColor: string;
@@ -44,8 +45,8 @@ const ScrollableFiberCable = (props: Props) => {
   const tube = useTubeNumber(fiberContext);
 
   React.useEffect(() => {
-    if (tubeRef.current !== useTubeNumber(fiberContext)) {
-      tubeRef.current = useTubeNumber(fiberContext);
+    if (tubeRef.current !== tube) {
+      tubeRef.current = tube;
       if (tubeRef.current) {
         ref.current?.scrollToIndex({
           animated: true,
@@ -76,25 +77,18 @@ const ScrollableFiberCable = (props: Props) => {
         viewableItems[0]?.item.fiberNumber;
       if (viewableItems.length > 0) {
         scrolledToIndex.current = firstViewableFiberCableNumber;
-        const cableBase = (firstViewableFiberCableNumber - 1) * 12;
-        //check difference in tubeRef and multiply by 12 and add or subtract depending on left or right swipe
-        if (
-          tubeRef.current &&
-          tubeRef.current < firstViewableFiberCableNumber
-        ) {
-          propsFiberRef.current = propsFiberRef.current + cableBase;
-          console.log("we swiped to higher cable");
-        } else {
-          console.log(
-            "we swiped to lower cable ",
-            cableBase
-          )
 
-          propsFiberRef.current = propsFiberRef.current - cableBase;
+        if (tubeRef.current) {
+          //check difference in tubeRef and multiply by 12 and add or subtract depending on left or right swipe
+          if (tubeRef.current < firstViewableFiberCableNumber) {
+            props.tubeChanged(12);
+          } else {
+            props.tubeChanged(-12);
+          }
         }
         //will need to check if viewableitems is greater or less than prev, to subtract or add to current fiber
         if (fiberContext) {
-          fiberContext.setFiber(propsFiberRef.current);
+          // fiberContext.setFiber(propsFiberRef.current)
           // tubeRef.current = useTubeNumber(fiberContext);
         }
       }
@@ -103,7 +97,7 @@ const ScrollableFiberCable = (props: Props) => {
   );
 
   const viewabilityConfig = {
-    minimumViewTime: 150,
+    minimumViewTime: 1,
     waitForInteraction: true,
     viewAreaCoveragePercentThreshold: 100,
   };

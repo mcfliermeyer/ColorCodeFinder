@@ -31,6 +31,7 @@ const ScrollableFiber = () => {
   const [fiber, setFiber] = React.useState(1);
   const scrolledToIndex = React.useRef<number>(fiber);
   const isFirstRender = React.useRef(true);
+  const fiberContext = React.useContext(FiberContext);
 
   React.useEffect(() => {
     ref.current?.scrollToIndex({
@@ -94,6 +95,13 @@ const ScrollableFiber = () => {
     },
     []
   );
+
+  const tubeChanged = (tubeDifference: number) => {//this is getting memoized because of callback
+    if (fiberContext){ console.log(fiberContext.fiber)}
+    if (tubeDifference > fiber) {
+      setFiber((prevFiber) => prevFiber + tubeDifference);
+    }
+  };
 
   const scrollEnded = () => {
     // needs setTimeout because snapToInterval still needs to run, then scrolledToIndex needs
@@ -168,6 +176,7 @@ const ScrollableFiber = () => {
         <ScrollableFiberCable
           fiber={fiber}
           setFiberCableNumber={setFiberCableNumber}
+          tubeChanged={tubeChanged}
         />
         <View style={styles.fiberInputWrapper}>
           <FiberInput
