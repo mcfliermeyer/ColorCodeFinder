@@ -43,8 +43,9 @@ const ScrollableFiber = () => {
       //hack to center both fiber and cable in flatlist.
       isFirstRender.current = false;
       setTimeout(() => {
+        addFiber();
         subtractFiber();
-      }, 50);
+      }, 100);
     }
   }, [fiber]);
 
@@ -61,13 +62,11 @@ const ScrollableFiber = () => {
     });
   };
   const setFiberNumber = React.useCallback((newFiber: number) => {
-    console.log("setting fiber number: ", newFiber);
     setFiber(newFiber);
   }, []);
 
   // right here we need to check fibernum to add or subtract 12 from it per which cable we scrolled to
   const setFiberCableNumber = (oldFiber: number) => {
-    console.log("local fiber: ", oldFiber);
     setFiber(() => oldFiber);
   };
 
@@ -96,16 +95,12 @@ const ScrollableFiber = () => {
     []
   );
 
-  const tubeChanged = (tubeDifference: number) => {//this is getting memoized because of callback
-      setFiber((prevFiber) => prevFiber + tubeDifference);
+  const tubeChanged = (tubeDifference: number) => {
+    setFiber((prevFiber) => prevFiber + tubeDifference);
   };
 
   const scrollEnded = () => {
-    // needs setTimeout because snapToInterval still needs to run, then scrolledToIndex needs
-    // to get updated and the scroll might still be scrolling
-    setTimeout(() => {
-      setFiber(scrolledToIndex.current);
-    }, 280);
+    setFiber(scrolledToIndex.current);
   };
 
   const viewabilityConfig = {
@@ -154,7 +149,8 @@ const ScrollableFiber = () => {
           onViewableItemsChanged={viewableItemsChanged}
           viewabilityConfig={viewabilityConfig}
           showsHorizontalScrollIndicator={false}
-          onScrollEndDrag={scrollEnded}
+          onMomentumScrollEnd={scrollEnded}
+          maxToRenderPerBatch={5}
           renderItem={({ item, index }) => (
             <View style={styles.view}>
               {fiber === item.fiberNumber && <Redlight />}
@@ -172,7 +168,6 @@ const ScrollableFiber = () => {
         />
         <ScrollableFiberCable
           fiber={fiber}
-          setFiberCableNumber={setFiberCableNumber}
           tubeChanged={tubeChanged}
         />
         <View style={styles.fiberInputWrapper}>

@@ -1,21 +1,14 @@
-import React, { useCallback, useRef } from "react";
+import React, { useCallback } from "react";
 import {
   FlatList,
   StyleSheet,
   View,
   Dimensions,
   ViewToken,
-  ListRenderItemInfo,
   ListRenderItem,
-  TextBase,
-  Text,
 } from "react-native";
-import { MotiView } from "moti";
 import useFiberColor from "../../hooks/useFiberColor";
 import useTubeNumber from "../../hooks/useTubeNumber";
-import { fiberBase, fiberColorDictionary } from "../utilities/utilities";
-import FiberInput from "./FiberInput";
-import Redlight from "./Redlight";
 import { FiberContext } from "./ScrollableFiber";
 
 const screenWidth = Dimensions.get("screen").width;
@@ -23,7 +16,6 @@ const itemSize = screenWidth - 80;
 
 interface Props {
   fiber: number;
-  setFiberCableNumber: (fiberNum: number) => void;
   tubeChanged: (tubeDifference: number) => void;
 }
 type FiberItem = {
@@ -37,7 +29,6 @@ const ScrollableFiberCable = (props: Props) => {
   const scrolledToIndex = React.useRef<number>(1);
   const propsFiberRef = React.useRef<number>(props.fiber);
   const tubeRef = React.useRef<number | null>(1);
-  // const prevTubeRef = React.useRef<number>(1)
   const fiberContext = React.useContext(FiberContext);
   const remainder = propsFiberRef.current % 12;
   const base = propsFiberRef.current - remainder;
