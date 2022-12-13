@@ -89,6 +89,22 @@ const ScrollableFiberCable = (props: Props) => {
     viewAreaCoveragePercentThreshold: 100,
   };
 
+  const onMomentumScrollEnd = () => {
+    if (fiberContext) {
+      if (scrolledToIndex.current && tubeRef.current) {
+        if (scrolledToIndex.current > tubeRef.current) {
+          const diff = scrolledToIndex.current - tubeRef.current;
+          props.tubeChanged(12 * diff);
+        } else if (scrolledToIndex.current < tubeRef.current) {
+          const diff = tubeRef.current - scrolledToIndex.current;
+          props.tubeChanged(-12 * diff);
+        } else {
+        }
+        tubeRef.current = scrolledToIndex.current;
+      }
+    }
+  };
+
   const renderItem: ListRenderItem<FiberItem> = ({
     item,
   }: {
@@ -128,25 +144,7 @@ const ScrollableFiberCable = (props: Props) => {
         decelerationRate={0.88}
         showsHorizontalScrollIndicator={false}
         maxToRenderPerBatch={3}
-        onMomentumScrollEnd={() => {
-          if (fiberContext) {
-            console.log("fiberContext: ", fiberContext.fiber);
-            console.log("tubeRef.current: ", tubeRef.current);
-            if (scrolledToIndex.current && tubeRef.current) {
-              if (scrolledToIndex.current > tubeRef.current){
-                const diff = scrolledToIndex.current - tubeRef.current;
-                props.tubeChanged(12 * diff)
-              }
-              else if (scrolledToIndex.current < tubeRef.current) {
-                const diff = tubeRef.current - scrolledToIndex.current;
-                props.tubeChanged(-12 * diff)
-              }
-              else {
-              }
-              tubeRef.current = scrolledToIndex.current;
-            }
-          }
-        }}
+        onMomentumScrollEnd={onMomentumScrollEnd}
       />
     </View>
   );
