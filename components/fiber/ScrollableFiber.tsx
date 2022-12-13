@@ -97,10 +97,7 @@ const ScrollableFiber = () => {
   );
 
   const tubeChanged = (tubeDifference: number) => {//this is getting memoized because of callback
-    if (fiberContext){ console.log(fiberContext.fiber)}
-    if (tubeDifference > fiber) {
       setFiber((prevFiber) => prevFiber + tubeDifference);
-    }
   };
 
   const scrollEnded = () => {

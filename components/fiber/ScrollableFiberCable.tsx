@@ -135,10 +135,12 @@ const ScrollableFiberCable = (props: Props) => {
             if (scrolledToIndex.current && tubeRef.current) {
               if (scrolledToIndex.current > tubeRef.current){
                 console.log("scrolled forward")
+                props.tubeChanged(12)
                 //do logic to see how many were scrolled and add or subtract from total
               }
               else if (scrolledToIndex.current < tubeRef.current) {
                 console.log("scrolled back");
+                props.tubeChanged(-12)
               }
               else {
                 console.log("nothingggggg")
