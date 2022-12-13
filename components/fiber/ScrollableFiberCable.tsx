@@ -37,6 +37,7 @@ const ScrollableFiberCable = (props: Props) => {
   const scrolledToIndex = React.useRef<number>(1);
   const propsFiberRef = React.useRef<number>(props.fiber);
   const tubeRef = React.useRef<number | null>(1);
+  // const prevTubeRef = React.useRef<number>(1)
   const fiberContext = React.useContext(FiberContext);
   const remainder = propsFiberRef.current % 12;
   const base = propsFiberRef.current - remainder;
@@ -77,20 +78,6 @@ const ScrollableFiberCable = (props: Props) => {
         viewableItems[0]?.item.fiberNumber;
       if (viewableItems.length > 0) {
         scrolledToIndex.current = firstViewableFiberCableNumber;
-
-        if (tubeRef.current) {
-          //check difference in tubeRef and multiply by 12 and add or subtract depending on left or right swipe
-          if (tubeRef.current < firstViewableFiberCableNumber) {
-            props.tubeChanged(12);
-          } else {
-            props.tubeChanged(-12);
-          }
-        }
-        //will need to check if viewableitems is greater or less than prev, to subtract or add to current fiber
-        if (fiberContext) {
-          // fiberContext.setFiber(propsFiberRef.current)
-          // tubeRef.current = useTubeNumber(fiberContext);
-        }
       }
     },
     []
@@ -141,6 +128,25 @@ const ScrollableFiberCable = (props: Props) => {
         decelerationRate={0.88}
         showsHorizontalScrollIndicator={false}
         maxToRenderPerBatch={3}
+        onMomentumScrollEnd={() => {
+          if (fiberContext) {
+            console.log("fiberContext: ", fiberContext.fiber);
+            console.log("tubeRef.current: ", tubeRef.current);
+            if (scrolledToIndex.current && tubeRef.current) {
+              if (scrolledToIndex.current > tubeRef.current){
+                console.log("scrolled forward")
+                //do logic to see how many were scrolled and add or subtract from total
+              }
+              else if (scrolledToIndex.current < tubeRef.current) {
+                console.log("scrolled back");
+              }
+              else {
+                console.log("nothingggggg")
+              }
+              tubeRef.current = scrolledToIndex.current;
+            }
+          }
+        }}
       />
     </View>
   );
