@@ -103,6 +103,5 @@ const styles = StyleSheet.create({
     left: 0,
     right: 10,
     top: 20,
-    // backgroundColor: "yellow",
   },
 });

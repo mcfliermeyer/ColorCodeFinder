@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useCallback } from "react";
+import React, { useCallback } from "react";
 import {
   FlatList,
   StyleSheet,

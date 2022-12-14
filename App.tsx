@@ -82,18 +82,6 @@ export default function App() {
           addPair={addPair}
           subtractPair={subtractPair}
         /> */}
-        {/* <TouchableFiberComponent
-          fiber={fiber}
-          handlePress={handleFiberPress}
-          height={480}
-          width={180}
-        />
-        <FiberInput
-          fiber={fiber}
-          setFiber={setFiberNumber}
-          addFiber={addFiber}
-          subtractFiber={subtractFiber}
-        /> */}
         <ScrollableFiber />
       </KeyboardAvoidingView>
     </View>
