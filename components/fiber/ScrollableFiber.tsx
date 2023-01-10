@@ -12,12 +12,7 @@ import { fiberColorDictionary } from "../utilities/utilities";
 import FiberInput from "./FiberInput";
 import Redlight from "./Redlight";
 import ScrollableFiberCable from "./ScrollableFiberCable";
-
-export type FiberContextType = {
-  fiber: number;
-  setFiber: React.Dispatch<React.SetStateAction<number>>;
-};
-export const FiberContext = React.createContext<FiberContextType | null>(null);
+import { FiberContext } from "./FiberContext";
 
 const screenWidth = Dimensions.get("screen").width;
 const horizontalMargin = 50;

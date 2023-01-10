@@ -5,7 +5,7 @@ import CopperPairSelector from "./CopperPairSelector";
 import TouchableCopperPairComponent from "./TouchableCopperPairComponent";
 
 const CopperComponent = () => {
-  const [pair, setPair] = React.useState(0);
+  const [pair, setPair] = React.useState(1);
   const [pairSelectorVisible, setPairSelectorVisible] = React.useState(false);
   const addPair = () => {
     setPair((oldPair) => {

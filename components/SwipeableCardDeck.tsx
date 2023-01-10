@@ -12,12 +12,12 @@ const SwipeableCardDeck = ({ children }: Props) => {
   const [cardArray, setCardArray] = useState(
     childArray.map((component) => cardBuilder(component))
   );
-  const BASE = -30;
+  const BASEOFFSET = -30;
 
   //whenever state changes, bring all cards back to correct position in an offset deck
   useEffect(() => {
     cardArray.map((card, index) => {
-      const offset = BASE * index;
+      const offset = BASEOFFSET * index;
       console.log("index: ", index, " offset: ", offset)
       Animated.spring(card.yPosition, {
         toValue: offset,

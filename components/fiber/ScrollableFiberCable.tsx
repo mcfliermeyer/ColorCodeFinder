@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import useFiberColor from "../../hooks/useFiberColor";
 import useTubeNumber from "../../hooks/useTubeNumber";
-import { FiberContext } from "./ScrollableFiber";
+import { FiberContext } from "./FiberContext";
 
 const screenWidth = Dimensions.get("screen").width;
 const itemSize = screenWidth - 80;
