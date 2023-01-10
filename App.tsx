@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 import React, { useRef, useEffect } from "react";
 import {
   TouchableWithoutFeedback,
@@ -63,14 +64,28 @@ export default function App() {
     setFiber(() => newFiber);
   };
 
+=======
+import React from "react";
+import { StyleSheet, KeyboardAvoidingView, Platform, View } from "react-native";
+import { useFonts } from "expo-font";
+import CardHolder from "./components/CardHolder";
+import CopperComponent from "./components/copper/CopperComponent";
+import ScrollableFiber from "./components/fiber/ScrollableFiber";
+import SwipeableCardDeck from "./components/SwipeableCardDeck";
+
+export default function App() {
+  const [fontsLoaded] = useFonts({
+    "Inter-Black": require("./assets/fonts/Lato-Regular.ttf"),
+  });
+>>>>>>> Stashed changes
   return (
     // for scroll to work, this cannot wrap whole screen, as it will remove and gestures i think
     <View style={styles.container}>
       <KeyboardAvoidingView
-        style={styles.container}
         behavior={Platform.OS === "ios" ? "padding" : undefined}
         enabled
       >
+<<<<<<< Updated upstream
         {/* <CopperPairSelector
           handlePairSelected={handlePairSelected}
           pairSelectorVisible={pairSelectorVisible}
@@ -83,15 +98,19 @@ export default function App() {
           subtractPair={subtractPair}
         /> */}
         <ScrollableFiber />
+=======
+        <View style={{ padding: 40 }} />
+        <SwipeableCardDeck>
+          <ScrollableFiber />
+          <CopperComponent />
+        </SwipeableCardDeck>
+>>>>>>> Stashed changes
       </KeyboardAvoidingView>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  copperPairSelector: {
-    flex: 1,
-  },
   container: {
     flex: 1,
     backgroundColor: "#36393e",

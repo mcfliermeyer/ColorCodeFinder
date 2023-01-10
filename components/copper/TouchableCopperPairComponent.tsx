@@ -4,6 +4,7 @@ import {
   StyleSheet,
   StyleProp,
   ViewStyle,
+  TouchableNativeFeedback,
 } from "react-native";
 import useRingColor from "../../hooks/useRingColor";
 import useTipColor from "../../hooks/useTipColor";
