@@ -26,7 +26,6 @@ const ScrollableFiber = () => {
   const [fiber, setFiber] = React.useState(1);
   const scrolledToIndex = React.useRef<number>(fiber);
   const isFirstRender = React.useRef(true);
-  const fiberContext = React.useContext(FiberContext);
 
   React.useEffect(() => {
     ref.current?.scrollToIndex({
@@ -56,15 +55,6 @@ const ScrollableFiber = () => {
       return 1;
     });
   };
-  const setFiberNumber = React.useCallback((newFiber: number) => {
-    setFiber(newFiber);
-  }, []);
-
-  // right here we need to check fibernum to add or subtract 12 from it per which cable we scrolled to
-  const setFiberCableNumber = (oldFiber: number) => {
-    setFiber(() => oldFiber);
-  };
-
   const createData = () => {
     const myArray = Array.from({ length: 50 }, (e, i) => i + 1);
     const mapped = myArray.map((e, i) => {
@@ -72,7 +62,6 @@ const ScrollableFiber = () => {
     });
     return mapped;
   };
-
   const viewableItemsChanged = useCallback(
     ({
       viewableItems,
@@ -84,7 +73,7 @@ const ScrollableFiber = () => {
       const firstViewableFiberNumber: number =
         viewableItems[0]?.item.fiberNumber;
       if (viewableItems.length > 0) {
-        scrolledToIndex.current = firstViewableFiberNumber + 4; //plus 2 so it doesnt backtrack by 2 to center list
+        scrolledToIndex.current = firstViewableFiberNumber + 4; //plus 4 so it doesnt backtrack by 2 to center list
       }
     },
     []

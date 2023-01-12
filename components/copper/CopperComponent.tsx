@@ -23,7 +23,6 @@ const CopperComponent = () => {
     setPair(() => newPair);
   };
   const handlePress = () => {
-    console.log("pressed copper")
     setPairSelectorVisible(true);
   };
   const handlePairSelected = (pairSelected: number) => {

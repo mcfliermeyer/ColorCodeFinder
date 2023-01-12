@@ -18,7 +18,6 @@ const SwipeableCardDeck = ({ children }: Props) => {
   useEffect(() => {
     cardArray.map((card, index) => {
       const offset = BASEOFFSET * index;
-      console.log("index: ", index, " offset: ", offset)
       Animated.spring(card.yPosition, {
         toValue: offset,
         speed: 5,

@@ -1,4 +1,4 @@
-import { FiberContextType } from "../fiber/ScrollableFiber";
+import { FiberContextType } from "../fiber/FiberContext";
 
 export const fiberColorDictionary = [
   "#00FFFF",
@@ -31,7 +31,6 @@ export const copperRingColorDictionary = [
 ] as const;
 
 export const fiberBase = (fiberContext: FiberContextType | null) => {
-  console.log(fiberContext)
   if (fiberContext === null) return 100;
   if (fiberContext.fiber < 12) return fiberContext.fiber;
   return (fiberContext.fiber % 12) + 1;
