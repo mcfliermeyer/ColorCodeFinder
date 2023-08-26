@@ -41,17 +41,27 @@ const SwipeableCardDeck = ({ children }: Props) => {
     const yPosition = useRef(new Animated.Value(0)).current;
     const panResponder = PanResponder.create({
       onStartShouldSetPanResponder: () => false,
-      onMoveShouldSetPanResponder: () => true,
-      onStartShouldSetPanResponderCapture: () => false,
-      onMoveShouldSetPanResponderCapture: () => true,
+      onMoveShouldSetPanResponder: (event, gesture) => {
+        console.log(event.type);
+        if (gesture?.moveX > gesture?.moveY && gesture?.moveY > 100) {
+          console.log("moving horizontally");
+          return false;
+        }
+        return true;
+      },
+      // onStartShouldSetPanResponderCapture: () => false,
+      // onMoveShouldSetPanResponderCapture: (_, gesture) => {
+      //   console.log("moving");
+      //   return true
+      // },
       onPanResponderMove: (_, gestureState) => {
         yPosition.setValue(gestureState.dy);
       },
       onPanResponderRelease: (_, gestureState) => {
         if (
           // if swipe up or down isnt far enough, bring back to center
-          gestureState.dy > -SCREEN_HEIGHT / 2 + 200 &&
-          gestureState.dy < SCREEN_HEIGHT / 2 - 200
+          gestureState.dy > -SCREEN_HEIGHT / 2 + 300 &&
+          gestureState.dy < SCREEN_HEIGHT / 2 - 300
         ) {
           //animates card back to center
           Animated.spring(yPosition, {
@@ -96,29 +106,31 @@ const SwipeableCardDeck = ({ children }: Props) => {
 
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      {cardArray.map((component, index) => (
-        <Animated.View
-          {...cardArray[index].panResponder.panHandlers}
-          key={index}
-          style={{
-            height: SCREEN_HEIGHT - 140,
-            width: SCREEN_WIDTH - 40,
-            padding: 10,
-            position: "absolute",
-            backgroundColor: "gray",
-            borderRadius: 10,
-            borderColor: "black",
-            borderStyle: "solid",
-            borderWidth: 2,
-            transform: [
-              { translateY: cardArray[index].yPosition },
-              { rotate: rotateCard(cardArray[index].yPosition) },
-            ],
-          }}
-        >
-          {component.component}
-        </Animated.View>
-      )).reverse()}
+      {cardArray
+        .map((component, index) => (
+          <Animated.View
+            {...cardArray[index].panResponder.panHandlers}
+            key={index}
+            style={{
+              height: SCREEN_HEIGHT - 140,
+              width: SCREEN_WIDTH - 40,
+              padding: 10,
+              position: "absolute",
+              backgroundColor: "gray",
+              borderRadius: 10,
+              borderColor: "black",
+              borderStyle: "solid",
+              borderWidth: 2,
+              transform: [
+                { translateY: cardArray[index].yPosition },
+                { rotate: rotateCard(cardArray[index].yPosition) },
+              ],
+            }}
+          >
+            {component.component}
+          </Animated.View>
+        ))
+        .reverse()}
     </View>
   );
 };

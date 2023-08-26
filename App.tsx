@@ -17,8 +17,8 @@ export default function App() {
         enabled
       >
         <SwipeableCardDeck>
-          <CopperComponent />
           <ScrollableFiber />
+          <CopperComponent />
         </SwipeableCardDeck>
       </KeyboardAvoidingView>
     </View>
